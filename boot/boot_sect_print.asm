@@ -32,7 +32,7 @@ done:
 
 
 
-print_nl:
+print_ln:
     pusha
     
     mov ah, 0x0e
