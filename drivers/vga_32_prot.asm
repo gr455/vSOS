@@ -1,9 +1,9 @@
-/*
- *	use:
- *	print_str_32p:
- *		in: ebx, edx
- *		prints character at [ebx] to vga display at [edx]
- */
+; /*
+;  *	use:
+;  *	print_str_32p:
+;  *		in: ebx, edx
+;  *		prints character at [ebx] to vga display at [edx]
+;  */
 
 [bits 32]
 

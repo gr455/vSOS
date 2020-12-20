@@ -1,4 +1,4 @@
-; load at bootsector
+; load at bootsector in memory
 [org 0x7c00]
 
 ; ** sector 1 : boot **
@@ -29,6 +29,7 @@ jmp $
 %include "boot_sect_print.asm"
 %include "boot_sect_print_hex.asm"
 %include "boot_sect_disk.asm"
+%include "../drivers/vga_32_prot.asm"
 
 HM_MSG: dw "Booting into vSOS...", 0
 
