@@ -13,6 +13,7 @@ dsk_ld:
 	mov ah, 0x02 ; read mode
 	mov al, dh ; number of sectors
 	mov cl, 0x02 ; first sector to read (0x01 contains MBR); for some reason indexing starts at 1 for chs
+	; 0x02 will contain kernel
 	mov ch, 0x00 ; cylinder
 	mov dh, 0x00 ; head
 

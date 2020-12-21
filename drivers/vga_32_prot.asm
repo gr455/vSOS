@@ -1,15 +1,15 @@
 ; /*
 ;  *	use:
 ;  *	print_str_32p:
-;  *		in: ebx
-;  *		prints character at [ebx] to vga display
+;  *		in: ebx, edx
+;  *		prints character at [ebx] to vga display at [edx]
+;  * 	
 ;  */
 
 [bits 32]
 
 print_str_32p:
 	pusha
-	mov edx, 0xb8000 ; vga starting pointer
 	jmp p_lp_32p
 
 p_32p_end:
@@ -17,6 +17,7 @@ p_32p_end:
 	ret
 
 p_lp_32p:
+	; pusha
 	mov al, [ebx]
 	mov ah, 0x0f ; white on black
 	cmp al, 0
