@@ -1,14 +1,15 @@
-/*
- * for 32 bit protected mode
- * Global Descriptor Table only used for boot
- * contains two segments, text and data
- *
- */
+; /*
+;  * for 32 bit protected mode
+;  * Global Descriptor Table only used for boot
+;  * based on Intel's flat model
+;  *
+;  */
 
 gdt_start:
 
 ; segment descriptors begin
 
+; for cpu null catching, if segment register contains 0x0
 gdt_null:
 	dd 0x0
 	dd 0x0

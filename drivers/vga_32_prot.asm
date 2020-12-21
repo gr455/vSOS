@@ -1,8 +1,8 @@
 ; /*
 ;  *	use:
 ;  *	print_str_32p:
-;  *		in: ebx, edx
-;  *		prints character at [ebx] to vga display at [edx]
+;  *		in: ebx
+;  *		prints character at [ebx] to vga display
 ;  */
 
 [bits 32]
