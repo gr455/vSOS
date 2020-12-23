@@ -25,7 +25,7 @@ call use_protected
 
 BEGIN_PM:
 	mov ebx, BOOT_MSG
-	mov edx, 0x8c0
+	mov edx, 0x720
 	add edx, 0xb8000
 	call print_str_32p
 	call KERNEL_OFFSET
