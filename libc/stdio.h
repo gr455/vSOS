@@ -5,5 +5,6 @@
 
 void mprints(char * s, unsigned int length);
 void prints(char * s);
+void clrscr();
 
 #endif

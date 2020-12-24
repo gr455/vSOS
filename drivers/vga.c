@@ -4,7 +4,7 @@
 #include "vga.h"
 
 void vga_set_chr(unsigned char chr, unsigned char attr){
-	unsigned char * vga_start = (unsigned char *) 0xb8001;
+	unsigned char * vga_start = (unsigned char *) 0xb8000;
 	unsigned int crsr = get_crsr();
 	unsigned int offset = crsr;
 
@@ -12,15 +12,15 @@ void vga_set_chr(unsigned char chr, unsigned char attr){
 
 	if(chr == '\n'){
 		int rows = offset / (2 * XMAX);
-		offset = make_offset(XMAX - 1, rows) + 1;
+		offset = make_offset(rows + 1, 0);
 	}
 
 	else{
 		vga_start[offset] = chr;
 		vga_start[offset+1] = attr;
+		offset += 2;
 	}
 
-	offset += 2;
 	offset = handle_scroll(offset);
 	set_crsr(offset);
 }
@@ -42,8 +42,8 @@ unsigned int get_crsr(){
 
 void set_crsr(unsigned int offset){
 	offset /= 2;
-	unsigned char lo = (offset << 8) >> 8;
-	unsigned char hi = (offset - lo) >> 8;
+	unsigned char lo = offset & 0xff;
+	unsigned char hi = offset >> 8;
 
 	port_byte_out(VGA_CTRL, 14);
     port_byte_out(VGA_DATA, hi);
@@ -52,11 +52,13 @@ void set_crsr(unsigned int offset){
 }
 
 void vga_clr(){
-	unsigned char * vga_start = (unsigned char *) 0xb8001;
-	for(unsigned int i = 0; i < YMAX * XMAX; i+=2){
+	unsigned char * vga_start = (unsigned char *) 0xb8000;
+	unsigned int i = 0;
+	for(i; i < YMAX * XMAX; i+=2){
 		vga_start[i] = ' ';
 		vga_start[i+1] = 0xf;
 	}
+	set_crsr(0);
 }
 
 unsigned int handle_scroll(unsigned int offset){

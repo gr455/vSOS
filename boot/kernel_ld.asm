@@ -16,7 +16,7 @@ kernel_ld:
 
 	; reading base 0x02 from disk
 	mov bx, KERNEL_OFFSET ; 
-	mov dh, 15 ; number of sectors
+	mov dh, 31 ; number of sectors
 
 	mov dl, [BOOT_DRIVE]
 	call dsk_ld
