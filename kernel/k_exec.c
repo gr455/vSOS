@@ -1,10 +1,14 @@
 #include "ports.h"
 #include "utils.h"
+#include "panic.h"
 #include "../libc/stdio.h"
 #include "../drivers/vga.h"
 
-void main(){
+void k_main(){
 
 	clrscr();
-	prints("                                vSOS v1.0 beta");
+	printsln("                                vSOS v1.0 beta\n");
+	printsln("vSOS:/home > ");
+	__asm__ __volatile__ ("int $2");
+	// panic("fatal: attempt to kill init");
 }	

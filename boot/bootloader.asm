@@ -5,6 +5,7 @@ KERNEL_OFFSET: equ 0x1000
 
 ; ** sector 1 : boot **
 
+boot:
 mov [BOOT_DRIVE], dl ; BIOS stores boot drive in dl
 
 ; move stack pointer away to not accidentally overwrite stack
@@ -43,7 +44,7 @@ BEGIN_PM:
 
 
 HM_MSG: dw "Booting into vSOS...", 0
-BOOT_MSG: dw "vSOS v0.0 beta", 0
+BOOT_MSG: dw "Shifting control to kernel", 0
 KRL_LD_MSG: dw "Loading kernel...", 0
 BOOT_DRIVE: db 0x0 ; hard drive
 

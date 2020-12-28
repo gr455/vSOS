@@ -54,7 +54,7 @@ void set_crsr(unsigned int offset){
 void vga_clr(){
 	unsigned char * vga_start = (unsigned char *) 0xb8000;
 	unsigned int i = 0;
-	for(i; i < YMAX * XMAX; i+=2){
+	for(i; i < YMAX * XMAX * 2; i+=2){
 		vga_start[i] = ' ';
 		vga_start[i+1] = 0xf;
 	}

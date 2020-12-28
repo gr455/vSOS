@@ -1,6 +1,6 @@
 ; /*
 ;  * for 32 bit protected mode
-;  * Global Descriptor Table only used for boot
+;  * Global Descriptor Table
 ;  * based on Intel's flat model
 ;  *
 ;  */
