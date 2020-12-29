@@ -1,6 +1,6 @@
 ; /*
 ;  * defines ISRs for interrupts.
-;  * push cpu state onto stack -> cli -> handle interrupt -> sti
+;  * cli -> handle interrupt -> sti
 ;  * sourced from https://github.com/cfenollosa/os-tutorial/blob/master/18-interrupts/cpu/interrupt.asm 
 ;  */
 

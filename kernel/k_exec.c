@@ -2,9 +2,11 @@
 #include "utils.h"
 #include "panic.h"
 #include "../libc/stdio.h"
-#include "../drivers/vga.h"
+#include "isr.h"
 
 void k_main(){
+
+	init_isr();
 
 	clrscr();
 	printsln("                                vSOS v1.0 beta\n");
