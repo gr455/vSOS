@@ -10,7 +10,9 @@ void k_main(){
 
 	clrscr();
 	printsln("                                vSOS v1.0 beta\n");
-	printsln("vSOS:/home > ");
-	__asm__ __volatile__ ("int $2");
-	// panic("fatal: attempt to kill init");
+	prints("vSOS:/home > ");
+	// __asm__ __volatile__("sti");
+	// __asm__ __volatile__ ("int $5");
+
+	// panic("fatal: cpu encountered a triple fault. SIGABRT");
 }	

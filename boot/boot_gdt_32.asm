@@ -20,7 +20,7 @@ gdt_code:
 	dw 0x0 ; start(base) 0:15
 	db 0x0 ; base 16:23
 	db 10011010b; ( present )1 ( privilege )00 ( descriptor type )1 ( code )1 ( conforming )0 ( readable )1 ( accessed )0 
-	db 11001111b; ( granularity )1 (32 - bit default )1 (64 - bit seg )0 ( AVL )0, size 16:19; makes net limit 0xfffff
+	db 11001111b; ( granularity )1 (32 - bit default )1 (64 - bit seg )0 ( AVL )0, limit 16:19; makes net limit 0xfffff
 	db 0x0; base 24:31
 
 gdt_data:

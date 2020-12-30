@@ -1,6 +1,10 @@
 #include "isr.h"
 
+//global
+isr_h handlers[256];
+
 void init_isr() {
+	/* Map system ISRs */
 	init_idt(0, (uint32_t)isr0);
 	init_idt(1, (uint32_t)isr1);
 	init_idt(2, (uint32_t)isr2);
@@ -33,6 +37,51 @@ void init_isr() {
 	init_idt(29, (uint32_t)isr29);
 	init_idt(30, (uint32_t)isr30);
 	init_idt(31, (uint32_t)isr31);
+
+	/* Remap PIC */
+
+	// fetch masks
+	uint8_t mask_m = port_byte_in(0x21);
+	uint8_t mask_s = port_byte_in(0xA1);
+
+	// init requred
+	port_byte_out(0x20, 0x11);
+    port_byte_out(0xA0, 0x11);
+
+    // set irq offsets
+    port_byte_out(0x21, 0x20);
+    port_byte_out(0xA1, 0x28);
+
+    port_byte_out(0x21, 0x04); // configure slave with master
+    port_byte_out(0xA1, 0x02);
+
+    port_byte_out(0x21, 0x01);
+    port_byte_out(0xA1, 0x01);
+    port_byte_out(0x21, 0x0);
+    port_byte_out(0xA1, 0x0);
+
+    // restore masks
+    port_byte_out(0x21, mask_m);
+    port_byte_out(0xA1, mask_s);
+
+    /* Map IRQs */
+    init_idt(32, (uint32_t)irq0);
+    init_idt(33, (uint32_t)irq1);
+    init_idt(34, (uint32_t)irq2);
+    init_idt(35, (uint32_t)irq3);
+    init_idt(36, (uint32_t)irq4);
+    init_idt(37, (uint32_t)irq5);
+    init_idt(38, (uint32_t)irq6);
+    init_idt(39, (uint32_t)irq7);
+    init_idt(40, (uint32_t)irq8);
+    init_idt(41, (uint32_t)irq9);
+    init_idt(42, (uint32_t)irq10);
+    init_idt(43, (uint32_t)irq11);
+    init_idt(44, (uint32_t)irq12);
+    init_idt(45, (uint32_t)irq13);
+    init_idt(46, (uint32_t)irq14);
+    init_idt(47, (uint32_t)irq15);
+
 
 	init_idt_ptr();
 }
@@ -75,7 +124,7 @@ char * exception_messages[] = {
     "Reserved"
 };
 
-void isr_handler(isr_reg_t r) {
+void isr_handler(isr_reg_t r){
     prints("received interrupt: ");
     // char s[3];
     // int_to_ascii(r.int_no, s);
@@ -85,3 +134,25 @@ void isr_handler(isr_reg_t r) {
     prints("\n");
 }
 
+void irq_handler(isr_reg_t r){
+	printsln("recieved hardware interrupt");
+
+	/* EOI */
+	if(r.int_no > 40) // slave
+		port_byte_out(0xa0, 0x20);
+
+	// master
+	port_byte_out(0x20, 0x20);
+
+	/* handle */
+
+	// handler has a value of offset in code segment
+	// handler itself is in data segment, but the value offsets code segment
+	// hence works with non flat gdt model
+	isr_h handler = handlers[r.int_no];
+	handler(r);
+}
+
+void new_handler(uint8_t irq, isr_h handler){
+	handlers[irq] = handler;
+}
