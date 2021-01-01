@@ -8,7 +8,8 @@ void vga_set_chr(unsigned char chr, unsigned char attr){
 	unsigned int crsr = get_crsr();
 	unsigned int offset = crsr;
 
-	if(offset > XMAX * YMAX) return;
+	if(offset > XMAX * YMAX * 2) return;
+	if(offset < 0) return;
 
 	if(chr == '\n'){
 		int rows = offset / (2 * XMAX);
@@ -62,9 +63,19 @@ void vga_clr(){
 }
 
 unsigned int handle_scroll(unsigned int offset){
-	// if(offset < XMAX * YMAX) return offset;
-	// for(unsigned int i = 0; i < YMAX; i++){
-
-	// }
+	if(offset < XMAX * YMAX * 2) return offset;
+	unsigned int i = 0;
+	for(; i < YMAX; i++){
+		c_memcpy(0xb8000 + 2 * XMAX, 0xb8000, XMAX*YMAX*2 - XMAX*2);
+		offset = XMAX*2*(YMAX - 1);
+	}
 	return offset;
+}
+
+void clr_back(){
+	unsigned int crsr = get_crsr();
+	if(crsr <= 0) return;
+	unsigned char * vga_start = (unsigned char *) 0xb8000;
+	vga_start[crsr - 2] = ' ';
+	set_crsr(crsr - 2);
 }

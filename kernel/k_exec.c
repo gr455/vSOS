@@ -3,16 +3,23 @@
 #include "panic.h"
 #include "../libc/stdio.h"
 #include "isr.h"
+#include "../drivers/keyboard.h"
+
+void init(uint8_t mode);
 
 void k_main(){
 
-	init_isr();
-
+	init(1);
 	clrscr();
 	printsln("                                vSOS v1.0 beta\n");
 	prints("vSOS:/home > ");
-	// __asm__ __volatile__("sti");
-	// __asm__ __volatile__ ("int $5");
 
-	// panic("fatal: cpu encountered a triple fault. SIGABRT");
-}	
+}
+
+void init(uint8_t mode){
+	if(mode == 1){
+		init_isr();
+		__asm__ __volatile__("sti");
+		init_keyboard();
+	}
+}

@@ -76,6 +76,6 @@ typedef void (*isr_h)(isr_reg_t);
 void init_isr();
 void isr_handler(isr_reg_t r);
 void irq_handler(isr_reg_t r);
-void new_handler(uint8_t irq, isr_h handler);
+void new_handler(uint8_t intr, isr_h handler);
 
 #endif
