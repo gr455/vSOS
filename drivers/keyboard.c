@@ -5,17 +5,21 @@
 #include "keyboard.h"
 
 uint8_t caps = 0;
+char keybuff[MAX_KEYBUFF_S][2];
+uint8_t pusher = 0;
+uint8_t popper = 0;
+uint8_t buff_size = 0;
 
 static void keyboard_callback(isr_reg_t regs){
 
 	uint8_t scancode = port_byte_in(0x60); // get scancode from pic
 	char * sc_ascii;
 	int_to_ascii(scancode, sc_ascii);
-	// prints("Keyboard scancode: ");
-	// prints(sc_ascii);
-	// prints(", ");
+	// push_buff("Keyboard scancode: ");
+	// push_buff(sc_ascii);
+	// push_buff(", ");
 	print_letter(scancode);
-	// prints("\n");
+	// push_buff("\n");
 }
 
 void init_keyboard(){
@@ -24,194 +28,217 @@ void init_keyboard(){
 	printsln("done");
 }
 
+void push_buff(char k[]){
+	keybuff[pusher][0] = k[0];
+	pusher++;
+	pusher = pusher % MAX_KEYBUFF_S;
+	buff_size++;
+}
+
+char * pop_buff(){
+	char * re = keybuff[popper];
+	popper++;
+	popper = popper % MAX_KEYBUFF_S;
+	buff_size--;
+	return re;
+}
+
+char * peek_buff(){
+	return keybuff[popper];
+}
+
+uint8_t get_buffsize(){
+	return buff_size;
+}
+
 void print_letter(uint8_t scancode){
 	switch (scancode){
 		case 0x0:
-			prints("ERROR");
+			push_buff("ERROR");
 			break;
 		case 0x1:
-			// prints("ESC");
+			// push_buff("ESC");
 			break;
 		case 0x2:
-			prints("1");
+			push_buff("1");
 			break;
 		case 0x3:
-			prints("2");
+			push_buff("2");
 			break;
 		case 0x4:
-			prints("3");
+			push_buff("3");
 			break;
 		case 0x5:
-			prints("4");
+			push_buff("4");
 			break;
 		case 0x6:
-			prints("5");
+			push_buff("5");
 			break;
 		case 0x7:
-			prints("6");
+			push_buff("6");
 			break;
 		case 0x8:
-			prints("7");
+			push_buff("7");
 			break;
 		case 0x9:
-			prints("8");
+			push_buff("8");
 			break;
 		case 0x0A:
-			prints("9");
+			push_buff("9");
 			break;
 		case 0x0B:
-			prints("0");
+			push_buff("0");
 			break;
 		case 0x0C:
-			prints("-");
+			push_buff("-");
 			break;
 		case 0x0D:
-			prints("+");
+			push_buff("+");
 			break;
 		case 0x0E:
 			clr_back();
 			break;
 		case 0x0F:
-			prints("Tab");
+			push_buff("Tab");
 			break;
 		case 0x10:
-			prints("q");
+			push_buff("q");
 			break;
 		case 0x11:
-			prints("w");
+			push_buff("w");
 			break;
 		case 0x12:
-			prints("e");
+			push_buff("e");
 			break;
 		case 0x13:
-			prints("r");
+			push_buff("r");
 			break;
 		case 0x14:
-			prints("t");
+			push_buff("t");
 			break;
 		case 0x15:
-			prints("y");
+			push_buff("y");
 			break;
 		case 0x16:
-			prints("u");
+			push_buff("u");
 			break;
 		case 0x17:
-			prints("i");
+			push_buff("i");
 			break;
 		case 0x18:
-			prints("o");
+			push_buff("o");
 			break;
 		case 0x19:
-			prints("p");
+			push_buff("p");
 			break;
 		case 0x1A:
-			prints("[");
+			push_buff("[");
 			break;
 		case 0x1B:
-			prints("]");
+			push_buff("]");
 			break;
 		case 0x1C:
-			prints("\n");
+			push_buff("\n");
 			break;
 		case 0x1D:
-			prints("LCtrl");
+			push_buff("LCtrl");
 			break;
 		case 0x1E:
-			prints("a");
+			push_buff("a");
 			break;
 		case 0x1F:
-			prints("s");
+			push_buff("s");
 			break;
 		case 0x20:
-			prints("d");
+			push_buff("d");
 			break;
 		case 0x21:
-			prints("f");
+			push_buff("f");
 			break;
 		case 0x22:
-			prints("g");
+			push_buff("g");
 			break;
 		case 0x23:
-			prints("h");
+			push_buff("h");
 			break;
 		case 0x24:
-			prints("j");
+			push_buff("j");
 			break;
 		case 0x25:
-			prints("k");
+			push_buff("k");
 			break;
 		case 0x26:
-			prints("l");
+			push_buff("l");
 			break;
 		case 0x27:
-			prints(";");
+			push_buff(";");
 			break;
 		case 0x28:
-			prints("'");
+			push_buff("'");
 			break;
 		case 0x29:
-			prints("`");
+			push_buff("`");
 			break;
 		case 0x2A:
-			// prints("LShift");
+			// push_buff("LShift");
 			caps = 1;
 			break;
 		case 0x2B:
-			prints("\\");
+			push_buff("\\");
 			break;
 		case 0x2C:
-			prints("z");
+			push_buff("z");
 			break;
 		case 0x2D:
-			prints("x");
+			push_buff("x");
 			break;
 		case 0x2E:
-			prints("c");
+			push_buff("c");
 			break;
 		case 0x2F:
-			prints("v");
+			push_buff("v");
 			break;
 		case 0x30:
-			prints("b");
+			push_buff("b");
 			break;
 		case 0x31:
-			prints("n");
+			push_buff("n");
 			break;
 		case 0x32:
-			prints("m");
+			push_buff("m");
 			break;
 		case 0x33:
-			prints(",");
+			push_buff(",");
 			break;
 		case 0x34:
-			prints(".");
+			push_buff(".");
 			break;
 		case 0x35:
-			prints("/");
+			push_buff("/");
 			break;
 		case 0x36:
 			caps = 1;
 			break;
 		case 0x37:
-			prints("Keypad *");
+			push_buff("Keypad *");
 			break;
 		case 0x38:
-			prints("LAlt");
+			push_buff("LAlt");
 			break;
 		case 0x39:
-			prints(" ");
+			push_buff(" ");
 			break;
 		default:
 			/* 'keuyp' event corresponds to the 'keydown' + 0x80 
 			 * it may still be a scancode we haven't implemented yet, or
 			 * maybe a control/escape sequence */
 			if (scancode <= 0x7f) {
-				prints("Unknown key down");
+				push_buff("Unknown key down");
 			} else if (scancode <= 0x39 + 0x80) {
-				// prints("key up ");
+				// push_buff("key up ");
 				// print_letter(scancode - 0x80);
 				if(scancode - 0x80 == 0x2a) caps = 0;
-			} else prints("Unknown key up");
+			} else push_buff("Unknown key up");
 			break;
 	}
 }

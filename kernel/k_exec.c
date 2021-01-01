@@ -4,6 +4,7 @@
 #include "../libc/stdio.h"
 #include "isr.h"
 #include "../drivers/keyboard.h"
+#include "vsh.h"
 
 void init(uint8_t mode);
 
@@ -12,8 +13,7 @@ void k_main(){
 	init(1);
 	clrscr();
 	printsln("                                vSOS v1.0 beta\n");
-	prints("vSOS:/home > ");
-
+	shell();
 }
 
 void init(uint8_t mode){
