@@ -44,3 +44,29 @@ int strlen(char s[]) {
     while (s[i] != '\0') ++i;
     return i;
 }
+
+void split(char s[], char des[], uint8_t word){
+	unsigned int i = 0;
+	unsigned int j = 0;
+	uint8_t wc = 0;
+	for(; i < strlen(s); i++){
+		if(wc > word) return;
+		if(s[i] == ' '){
+			wc++;
+		}
+
+		if(wc == word){
+			des[j] = s[i];
+			j++;
+		}
+	}
+}
+
+int strcmp(char s1[], char s2[]){
+	if(strlen(s1) != strlen(s2)) return 1;
+	uint32_t i;
+	for(i; i < strlen(s1); i++){
+		if(s1[i] != s2[i]) return 1;
+	}
+	return 0;
+}

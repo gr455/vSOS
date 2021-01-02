@@ -5,7 +5,7 @@
 #include "keyboard.h"
 
 uint8_t caps = 0;
-char keybuff[MAX_KEYBUFF_S][2];
+char keybuff[MAX_KEYBUFF_S][2] = {'\0','\0'};
 uint8_t pusher = 0;
 uint8_t popper = 0;
 uint8_t buff_size = 0;
@@ -15,9 +15,6 @@ static void keyboard_callback(isr_reg_t regs){
 	uint8_t scancode = port_byte_in(0x60); // get scancode from pic
 	char * sc_ascii;
 	int_to_ascii(scancode, sc_ascii);
-	// push_buff("Keyboard scancode: ");
-	// push_buff(sc_ascii);
-	// push_buff(", ");
 	print_letter(scancode);
 	// push_buff("\n");
 }
@@ -96,7 +93,7 @@ void print_letter(uint8_t scancode){
 			push_buff("+");
 			break;
 		case 0x0E:
-			clr_back();
+			push_buff("\b");
 			break;
 		case 0x0F:
 			push_buff("Tab");

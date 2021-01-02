@@ -8,5 +8,6 @@
 #include "../drivers/keyboard.h"
 
 void shell();
+void handler();
 
 #endif
