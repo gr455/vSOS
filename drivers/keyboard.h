@@ -9,7 +9,7 @@
 
 static void keyboard_callback();
 void init_keyboard();
-void print_letter(uint8_t scancode);
+void handle_stroke(uint8_t scancode);
 void push_buff(char k[]);
 char * pop_buff();
 char * peek_buff();

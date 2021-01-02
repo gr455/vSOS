@@ -15,7 +15,7 @@ static void keyboard_callback(isr_reg_t regs){
 	uint8_t scancode = port_byte_in(0x60); // get scancode from pic
 	char * sc_ascii;
 	int_to_ascii(scancode, sc_ascii);
-	print_letter(scancode);
+	handle_stroke(scancode);
 	// push_buff("\n");
 }
 
@@ -48,7 +48,7 @@ uint8_t get_buffsize(){
 	return buff_size;
 }
 
-void print_letter(uint8_t scancode){
+void handle_stroke(uint8_t scancode){
 	switch (scancode){
 		case 0x0:
 			push_buff("ERROR");
@@ -233,7 +233,7 @@ void print_letter(uint8_t scancode){
 				push_buff("Unknown key down");
 			} else if (scancode <= 0x39 + 0x80) {
 				// push_buff("key up ");
-				// print_letter(scancode - 0x80);
+				// handle_stroke(scancode - 0x80);
 				if(scancode - 0x80 == 0x2a) caps = 0;
 			} else push_buff("Unknown key up");
 			break;

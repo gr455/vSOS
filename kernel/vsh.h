@@ -9,5 +9,6 @@
 
 void shell();
 void handler();
+int add(int a, int b);
 
 #endif

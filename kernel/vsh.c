@@ -40,13 +40,14 @@ void handler(char q[]){
 	prints("\n");
 	char word[128];
 	split(q, word, 0);
-	if(!strcmp(word, "add")){
-		char a[4];
-		char b[4];
+	if(strcmp(word, "add") == 0){
+		char a[10];
+		char b[10];
+		char re[10];
 		split(q, a, 1);
 		split(q, b, 2);
-		printsln(a);
-		printsln(b);
+		int_to_ascii(add(stoi(a), stoi(b)), re);
+		printsln(re);
 		return shell();
 	}
 	if(word[0] == '\0') return shell();
@@ -61,6 +62,6 @@ void handler(char q[]){
 // 	for(i; i < sizeof(valid_c))
 // }
 
-uint32_t add(uint32_t a, uint32_t b){
+int add(int a, int b){
 	return a+b;
 }
