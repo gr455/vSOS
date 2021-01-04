@@ -20,6 +20,7 @@ isr_common_stub:
 	mov fs, ax
 	mov gs, ax
 	
+    cld
 	call isr_handler
 	
     ; set segment registers to data segment before interrupt handling

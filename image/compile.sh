@@ -17,4 +17,6 @@ cd ../ \
 && nasm ../kernel/intr.asm -f elf -o ../kernel/doto/intr.o \
 && i386-elf-ld -o ../kernel/bin/kernel.bin -Ttext 0x1000 ../kernel/doto/entry/kernel_entry.o ../kernel/doto/*.o ../libc/doto/*.o ../drivers/doto/*.o --oformat binary \
 && cat ../boot/bin/boot.bin ../kernel/bin/kernel.bin > os-image \
+&& truncate os-image -s 1200k \
+&& mkisofs -o os-image.iso -b os-image . \
 && echo "done"

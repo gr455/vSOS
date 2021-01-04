@@ -16,10 +16,17 @@ void k_main(){
 	shell();
 }
 
-void init(uint8_t mode){
-	if(mode == 1){
-		init_isr();
-		__asm__ __volatile__("sti");
-		init_keyboard();
+void init(uint8_t level){
+	switch(level){
+		case 0:
+			__asm__ __volatile__("hlt");
+			break;
+		case 1:
+			__asm__ __volatile__("cli");
+			init_isr();
+			__asm__ __volatile__("sti");
+			init_keyboard();
+			break;
 	}
+
 }

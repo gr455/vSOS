@@ -7,7 +7,7 @@ void shell(){
 	char q[80];
 	q[0] = '\0'; // reference 
 	int p = 0;
-	prints("vSOS:/home > ");
+	prints("root@vSOS:nofs ># ");
 	while(1){
 		if(peek_buff()[0] == '\n'){
 			pop_buff();

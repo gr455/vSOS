@@ -5,7 +5,7 @@ void panic(char * panicstr){
 	printe("kernel panic: ");
 	printe(panicstr);
 	printe("\n");
-	printe("system will now reboot");
+	printe("Halting cpu. please restart the system");
 	// idle();
-	// init(0);
+	init(0);
 }
