@@ -125,24 +125,15 @@ char * exception_messages[] = {
 };
 
 void isr_handler(isr_reg_t r){
-    prints("received interrupt: ");
     char s[3];
     int_to_ascii(r.int_no, s);
     prints(s);
-    prints("\n");
+    prints(": ");
     prints(exception_messages[r.int_no]);
     prints("\n");
 }
 
 void irq_handler(isr_reg_t r){
-
-	// if(handlers[r.int_no] == 0) return; // not implemented
-
-
-	// printsln("recieved hardware interrupt ");
-	// char s[4];
-	// int_to_ascii(r.int_no, s);
-	// prints(s);
 
 	/* EOI */
 	if(r.int_no > 40) // slave
@@ -156,7 +147,7 @@ void irq_handler(isr_reg_t r){
 	// handler has a value of offset in code segment
 	// handler itself is in data segment, but the value offsets code segment
 	// hence works with non flat gdt model
-	if(handlers[r.int_no] == 0) return;
+	if(handlers[r.int_no] == 0) return; // not implemented
 	isr_h handler = handlers[r.int_no];
 	handler(r);
 }

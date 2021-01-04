@@ -6,6 +6,13 @@ Image file in `image/os-image`
 #### Run with QEMU(i386):
 `qemu-system-i386 -fda image/os-image`
 
+#### Run with VirtualBox
+- Use type `Other`
+- Use version `Other/Unkown`
+- Allocate atleast 2GB of ram
+- Set the iso image in `image/os-image.iso` in `IDE Secondary Master` storage device as a `Live CD`
+- Boot the machine
+
 ### Source:
 - `kernel/` contains all the kernel related files. `kernel/k_exec.c` contains the `k_main` function which gets executed on boot.
 - `libc/` contains all the standard C Libraries written for vSOS.

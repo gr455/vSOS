@@ -15,14 +15,17 @@ static void keyboard_callback(isr_reg_t regs){
 	uint8_t scancode = port_byte_in(0x60); // get scancode from pic
 	char * sc_ascii;
 	int_to_ascii(scancode, sc_ascii);
+	if(scancode == 0x1c){
+		push_buff("\n");
+		return;
+	}
 	handle_stroke(scancode);
+	// prints("G");
 	// push_buff("\n");
 }
 
 void init_keyboard(){
-	printsln("Intializing keyboard");
-	new_handler(0x21, keyboard_callback); // at irq 33
-	printsln("done");
+	new_handler(0x21, keyboard_callback); // at irq 1, isr 33
 }
 
 void push_buff(char k[]){
@@ -135,7 +138,6 @@ void handle_stroke(uint8_t scancode){
 			push_buff("]");
 			break;
 		case 0x1C:
-			push_buff("\n");
 			break;
 		case 0x1D:
 			push_buff("LCtrl");
@@ -230,12 +232,34 @@ void handle_stroke(uint8_t scancode){
 			 * it may still be a scancode we haven't implemented yet, or
 			 * maybe a control/escape sequence */
 			if (scancode <= 0x7f) {
-				push_buff("Unknown key down");
+				// push_buff("Unknown key down");
 			} else if (scancode <= 0x39 + 0x80) {
 				// push_buff("key up ");
 				// handle_stroke(scancode - 0x80);
 				if(scancode - 0x80 == 0x2a) caps = 0;
-			} else push_buff("Unknown key up");
+			} //else push_buff("Unknown key up");
 			break;
 	}
+}
+
+void mask_keybr_intr(){
+	/*
+		in al,0x21
+		or al,0x02
+		out 0x21,al
+	*/
+	uint8_t flags = port_byte_in(0x21);
+	flags |= 0x2;
+	port_byte_out(0x21, flags);  
+}
+
+void unmask_keybr_intr(){
+	/*
+		in al,0x21
+		and al,11111101b
+		out 0x21,al
+	*/
+	uint8_t flags = port_byte_in(0x21);
+	flags &= 0xfd;
+	port_byte_out(0x21, flags); 
 }

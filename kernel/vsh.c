@@ -7,7 +7,8 @@ void shell(){
 	char q[80];
 	q[0] = '\0'; // reference 
 	int p = 0;
-	prints("root@vSOS:nofs ># ");
+	prints("root@vSOS># ");
+	prints("");
 	while(1){
 		if(peek_buff()[0] == '\n'){
 			pop_buff();
@@ -48,13 +49,13 @@ void handler(char q[]){
 		split(q, b, 2);
 		int_to_ascii(add(stoi(a), stoi(b)), re);
 		printsln(re);
-		return shell();
+		return;
 	}
-	if(word[0] == '\0') return shell();
+	if(word[0] == '\0') return;
 
 	prints(word);
 	printsln(": command not found");
-	return shell();
+	return;
 }
 
 // uint8_t isvalidc(char c[]){
