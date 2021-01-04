@@ -19,5 +19,6 @@ cd ../ \
 && cat ../boot/bin/boot.bin ../kernel/bin/kernel.bin > os-image \
 && echo "done" \
 && truncate os-image -s 1200k \
+&& find . -type f -name '*.iso' -delete \
 && mkisofs -o os-image.iso -b os-image . \
 && echo "iso image created"
