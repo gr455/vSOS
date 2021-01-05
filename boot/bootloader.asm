@@ -12,12 +12,6 @@ mov [BOOT_DRIVE], dl ; BIOS stores boot drive in dl
 mov bp, 0x9000
 mov sp, bp
 
-mov bx, HM_MSG
-call print
-call print_ln
-call print_ln
-; call print_ln
-
 call kernel_ld
 
 call use_protected
@@ -25,12 +19,24 @@ call use_protected
 [bits 32]
 
 BEGIN_PM:
+	pusha
+	mov edx, 0xb8000
+	sub edx, 0x2
+	call clr_scr
+	popa
 	mov ebx, BOOT_MSG
-	mov edx, 0x780
-	add edx, 0xb8000
+	mov edx, 0xb8000
 	call print_str_32p
 	call KERNEL_OFFSET
 	jmp $
+
+clr_scr:
+	mov ebx, NONE
+	add edx, 0x2
+	call print_str_32p
+	cmp edx, 0xb87d0
+	jnz clr_scr
+	ret
 
 [bits 16]
 
@@ -43,10 +49,10 @@ BEGIN_PM:
 %include "kernel_ld.asm"
 
 
-HM_MSG: dw "Booting into vSOS...", 0
-BOOT_MSG: dw "Shifting control to kernel", 0
+BOOT_MSG: dw "Booting into vSOS", 0
 KRL_LD_MSG: dw "Loading kernel...", 0
 BOOT_DRIVE: db 0x0 ; hard drive
+NONE: db " "
 
 ; bootloader magic number
 

@@ -34,6 +34,7 @@ void init(uint8_t level){
 			__asm__ __volatile__("sti");
 			init_keyboard();
 			init_timer(50);
+			reset_watchdog(100);
 			break;
 	}
 
