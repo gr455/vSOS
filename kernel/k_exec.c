@@ -18,8 +18,7 @@ void k_main(){
 	clrscr();
 	printsln("                                vSOS v1.0 beta\n");
 	while(1){
-		prints("");
-		norace(1);
+
 		shell();
 	}
 }
@@ -38,10 +37,4 @@ void init(uint8_t level){
 			break;
 	}
 
-}
-
-void norace(uint8_t h){
-	mask_keybr_intr();
-	stall_time(h);
-	unmask_keybr_intr();
 }

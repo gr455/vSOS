@@ -16,7 +16,7 @@ void shell(){
 			return handler(q);
 		}
 
-		if(get_buffsize() > 0){
+		if(get_buffsize() > 0 && peek_buff()[0] != '\n'){ // peek here to handle race condition
 			char ch[2];
 			ch[0] = pop_buff()[0];
 			ch[1] = '\0';

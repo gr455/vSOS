@@ -20,7 +20,7 @@ protected_mode:
 	mov ss, ax
 	mov fs, ax
 	mov gs, ax
-	mov ebp, 0x90000 ; set stack
+	mov ebp, 0xffffff ; set stack
 	mov esp, ebp
 
 	call BEGIN_PM ; call label where PM is to be started
