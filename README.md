@@ -39,6 +39,6 @@ Image file in `image/os-image`
 
 #### Heavily used references:
 - https://www.cs.bham.ac.uk/~exr/lectures/opsys/10_11/lectures/os-dev.pdf
-- https://github.com/cfenollosa/os-tutorial/blob/master
-
+- https://github.com/cfenollosa/os-tutorial
+- 
 **PLEASE RUN ONLY ON A VIRTUAL MACHINE / EMULATOR**
