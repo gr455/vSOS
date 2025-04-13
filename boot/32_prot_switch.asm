@@ -24,4 +24,4 @@ protected_mode:
 	mov esp, ebp
 
 	call BEGIN_PM ; call label where PM is to be started
-
+; useless comment
