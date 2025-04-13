@@ -12,6 +12,14 @@ use_protected:
 
 [bits 32]
 
+STACK_SIZE equ 8192
+
+section .bss
+align 4
+kernel_stack:
+	resb STACK_SIZE
+
+section .text
 protected_mode:
 	; initialize all segment registers to data segment
 	mov ax, BOOT_GDT_DATA
@@ -20,8 +28,7 @@ protected_mode:
 	mov ss, ax
 	mov fs, ax
 	mov gs, ax
-	mov ebp, 0xffffff ; set stack
+	lea ebp, [kernel_stack + STACK_SIZE] ; set stack
 	mov esp, ebp
 
 	call BEGIN_PM ; call label where PM is to be started
-; useless comment
