@@ -6,6 +6,7 @@
 #include "../kernel/ports.h"
 #include "../kernel/isr.h"
 #include "../libc/stdio.h"
+#include "../libc/string.h"
 
 static void keyboard_callback();
 void init_keyboard();

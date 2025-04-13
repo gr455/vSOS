@@ -1,4 +1,5 @@
 #include "isr.h"
+#include "../libc/string.h"
 
 //global
 isr_h handlers[256];

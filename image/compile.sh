@@ -18,7 +18,7 @@ cd ../ \
 && i386-elf-ld -o ../kernel/bin/kernel.bin -Ttext 0x1000 ../kernel/doto/entry/kernel_entry.o ../kernel/doto/*.o ../libc/doto/*.o ../drivers/doto/*.o --oformat binary \
 && cat ../boot/bin/boot.bin ../kernel/bin/kernel.bin > os-image \
 && echo "done" \
-&& truncate os-image -s 1200k \
+&& truncate -s 1200k os-image \
 && find . -type f -name '*.iso' -delete \
 && mkisofs -o os-image.iso -b os-image . \
 && echo "iso image created"

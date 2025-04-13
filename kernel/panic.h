@@ -3,6 +3,7 @@
 
 #include "utils.h"
 #include "../libc/stdio.h"
+#include "k_exec.h"
 
 void panic(char *);
 

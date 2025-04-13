@@ -65,7 +65,7 @@ void vga_clr(){
 unsigned int handle_scroll(unsigned int offset){
 	unsigned char * vga_start = (unsigned char *) 0xb8000;
 	if(offset < XMAX * YMAX * 2) return offset;
-	c_memcpy(0xb8000 + 2 * XMAX, 0xb8000, XMAX*2*(YMAX - 1));
+	c_memcpy((char*) 0xb8000 + 2 * XMAX,(char *) 0xb8000, XMAX*2*(YMAX - 1));
 	offset = XMAX*2*(YMAX - 1);
 	unsigned int i = 0;
 	for(i; i < XMAX * 2; i += 2) vga_start[i + offset] = ' ';

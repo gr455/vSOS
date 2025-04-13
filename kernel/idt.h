@@ -4,7 +4,7 @@
 #include "utils.h"
 #include "../libc/util_types.h"
 
-extern const BOOT_GDT_CODE;
+extern const int BOOT_GDT_CODE;
 
 typedef struct idt_entry {
 	uint16_t l_base;
