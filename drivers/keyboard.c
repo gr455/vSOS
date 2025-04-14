@@ -44,6 +44,9 @@ char * pop_buff(){
 }
 
 char * peek_buff(){
+	char poppers[10];
+	int_to_ascii(popper, poppers);
+	// prints(poppers);
 	return keybuff[popper];
 }
 
@@ -54,7 +57,7 @@ uint8_t get_buffsize(){
 void handle_stroke(uint8_t scancode){
 	switch (scancode){
 		case 0x0:
-			push_buff("ERROR");
+			// push_buff("ERROR");
 			break;
 		case 0x1:
 			// push_buff("ESC");
@@ -99,7 +102,7 @@ void handle_stroke(uint8_t scancode){
 			push_buff("\b");
 			break;
 		case 0x0F:
-			push_buff("Tab");
+			// push_buff("Tab");
 			break;
 		case 0x10:
 			push_buff("q");
@@ -140,7 +143,7 @@ void handle_stroke(uint8_t scancode){
 		case 0x1C:
 			break;
 		case 0x1D:
-			push_buff("LCtrl");
+			// push_buff("LCtrl");
 			break;
 		case 0x1E:
 			push_buff("a");
@@ -219,25 +222,25 @@ void handle_stroke(uint8_t scancode){
 			caps = 1;
 			break;
 		case 0x37:
-			push_buff("Keypad *");
+			// push_buff("Keypad *");
 			break;
 		case 0x38:
-			push_buff("LAlt");
+			// push_buff("LAlt");
 			break;
 		case 0x39:
 			push_buff(" ");
 			break;
 		default:
-			/* 'keuyp' event corresponds to the 'keydown' + 0x80 
-			 * it may still be a scancode we haven't implemented yet, or
-			 * maybe a control/escape sequence */
-			if (scancode <= 0x7f) {
-				// push_buff("Unknown key down");
-			} else if (scancode <= 0x39 + 0x80) {
-				// push_buff("key up ");
-				// handle_stroke(scancode - 0x80);
-				if(scancode - 0x80 == 0x2a) caps = 0;
-			} //else push_buff("Unknown key up");
+			// /* 'keuyp' event corresponds to the 'keydown' + 0x80 
+			//  * it may still be a scancode we haven't implemented yet, or
+			//  * maybe a control/escape sequence */
+			// if (scancode <= 0x7f) {
+			// 	// push_buff("Unknown key down");
+			// } else if (scancode <= 0x39 + 0x80) {
+			// 	// push_buff("key up ");
+			// 	// handle_stroke(scancode - 0x80);
+			// 	if(scancode - 0x80 == 0x2a) caps = 0;
+			// } //else push_buff("Unknown key up");
 			break;
 	}
 }

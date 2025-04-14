@@ -8,9 +8,8 @@ void shell(){
 	q[0] = '\0'; // reference 
 	int p = 0;
 	prints("root@vSOS># ");
-	prints("");
-	while(1){
-		if(peek_buff()[0] == '\n'){
+  	while(1){
+		if(get_buffsize() > 0 && peek_buff()[0] == '\n'){
 			pop_buff();
 			q[p++] = '\0';
 			return handler(q);

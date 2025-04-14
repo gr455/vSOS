@@ -6,6 +6,9 @@
 #include "../libc/stdio.h"
 #include "isr.h"
 #include "../drivers/keyboard.h"
+#include "../libc/string.h"
+#include "../drivers/vga.h"
+
 
 void shell();
 void handler();
