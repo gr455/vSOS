@@ -12,7 +12,7 @@ use_protected:
 
 [bits 32]
 
-STACK_SIZE equ 8192
+STACK_SIZE: equ 8192
 
 section .bss
 align 4

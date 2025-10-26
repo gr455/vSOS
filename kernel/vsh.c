@@ -2,13 +2,33 @@
 
 char valid_c[128][10] = {"add"};
 
+// debug
+void __dbg_printespbsp() {
+	unsigned int ebp, esp;
+	char esps[32], ebps[32];
+
+	__asm__ volatile (
+		"mov %%ebp, %0\n\t"
+		"mov %%esp, %1\n\t"
+		: "=r"(ebp), "=r"(esp)
+	);
+	int_to_ascii(ebp, ebps);
+	int_to_ascii(esp, esps);
+
+	prints("-------------\nebp: ");
+	printsln(ebps);
+	prints("esp: ");
+	printsln(esps);
+	prints("-------------\n");
+}
 
 void shell(){
 	char q[80];
 	q[0] = '\0'; // reference 
 	int p = 0;
+	__dbg_printespbsp();
 	prints("root@vSOS># ");
-  	while(1){
+	while(1){
 		if(get_buffsize() > 0 && peek_buff()[0] == '\n'){
 			pop_buff();
 			q[p++] = '\0';
