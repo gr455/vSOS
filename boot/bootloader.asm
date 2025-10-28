@@ -9,8 +9,14 @@ boot:
 mov [BOOT_DRIVE], dl ; BIOS stores boot drive in dl
 
 ; move stack pointer away to not accidentally overwrite stack
+cli
+xor ax, ax
+mov ds, ax
+mov es, ax
+mov ss, ax
 mov bp, 0x9000
 mov sp, bp
+sti
 
 call kernel_ld
 
@@ -19,24 +25,30 @@ call use_protected
 [bits 32]
 
 BEGIN_PM:
-	pusha
+	; Save only necessary registers instead of pusha
+	; We don't want to use too much space on the temopary stack.
+	push edx
+	
 	mov edx, 0xb8000
 	sub edx, 0x2
-	call clr_scr
-	popa
+	
+	.clear_loop:
+		mov ebx, NONE
+		add edx, 0x2
+		call print_str_32p
+		cmp edx, 0xb87d0
+		jnz .clear_loop
+	
+	; Restore saved register
+	pop edx
+	
+	; Print boot message
 	mov ebx, BOOT_MSG
 	mov edx, 0xb8000
 	call print_str_32p
-	call KERNEL_OFFSET
-	jmp $
-
-clr_scr:
-	mov ebx, NONE
-	add edx, 0x2
-	call print_str_32p
-	cmp edx, 0xb87d0
-	jnz clr_scr
-	ret
+	
+	; Jump to kernel
+	jmp KERNEL_OFFSET
 
 [bits 16]
 

@@ -24,31 +24,29 @@ void __dbg_printespbsp() {
 
 void shell(){
 	char q[80];
-	q[0] = '\0'; // reference 
 	int p = 0;
 	__dbg_printespbsp();
 	prints("root@vSOS># ");
 	while(1){
-		if(get_buffsize() > 0 && peek_buff()[0] == '\n'){
-			pop_buff();
-			q[p++] = '\0';
-			return handler(q);
-		}
+		if(get_buffsize() > 0) {
+			char ch = pop_buff();
+			if(ch == '\n'){
+				q[p] = '\0';  // Terminate current comm
+				prints("\n");
+				handler(q);
+				return;
+			}
 
-		if(get_buffsize() > 0 && peek_buff()[0] != '\n'){ // peek here to handle race condition
-			char ch[2];
-			ch[0] = pop_buff()[0];
-			ch[1] = '\0';
-			if(ch[0] == '\b'){
+			if(ch == '\b'){
 				if(p > 0){
 					p--;
-					q[p] = '\0'; // in case user doesnt add another character
 					clr_back();
 				}
 			}
 			else{
-				q[p++] = ch[0];
-				prints(ch);
+				q[p++] = ch;
+				char tmp[2] = {ch, '\0'};
+				prints(tmp);
 			}
 		}
 	}

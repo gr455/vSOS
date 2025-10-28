@@ -11,9 +11,9 @@
 static void keyboard_callback();
 void init_keyboard();
 void handle_stroke(uint8_t scancode);
-void push_buff(char k[]);
-char * pop_buff();
-char * peek_buff();
+void push_buff(char k);
+char pop_buff();
+char peek_buff();
 uint8_t get_buffsize();
 void mask_keybr_intr();
 void unmask_keybr_intr();

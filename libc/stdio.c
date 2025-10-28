@@ -21,6 +21,17 @@ void printe(char * e){
 	while(e[i]) vga_set_chr(e[i++], 0xc);
 }
 
+void printc(char c) {
+	vga_set_chr(c, 0xf);
+}
+
+// max digits = 16
+void printi(int i) {
+	char is[16];
+	int_to_ascii(i, is);
+	prints(is);
+}
+
 void clrscr(){
 	vga_clr();
 }

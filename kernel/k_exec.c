@@ -10,8 +10,12 @@
 void init(uint8_t mode);
 void norace(uint8_t h);
 
-void k_main(){
+extern unsigned int __bss_start;
+extern unsigned int __bss_end;
+extern uint16_t kb_popper;
 
+void k_main(){
+	printi(kb_popper);
 	init(1);
 	printsln("Finished boot sequence");
 	stall_time(100);
@@ -37,4 +41,12 @@ void init(uint8_t level){
 			break;
 	}
 
+}
+
+void zero_bss() {
+    unsigned int *p = &__bss_start;
+    unsigned int *end = &__bss_end;
+    while (p < end) {
+        *p++ = 0;
+    }
 }
