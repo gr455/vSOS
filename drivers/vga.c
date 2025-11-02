@@ -14,14 +14,11 @@ void vga_set_chr(unsigned char chr, unsigned char attr){
 	if(chr == '\n'){
 		int rows = offset / (2 * XMAX);
 		offset = make_offset(rows + 1, 0);
-	}
-
-	else{
+	} else {
 		vga_start[offset] = chr;
 		vga_start[offset+1] = attr;
 		offset += 2;
 	}
-
 	offset = handle_scroll(offset);
 	set_crsr(offset);
 }

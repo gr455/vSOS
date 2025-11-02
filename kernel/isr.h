@@ -10,6 +10,7 @@
 #include "../libc/stdio.h"
 #include "idt.h"
 #include "ports.h"
+#include "../libc/string.h"
 
 /* ISRs reserved for CPU exceptions */
 extern void isr0();
@@ -63,6 +64,8 @@ extern void irq13();
 extern void irq14();
 extern void irq15();
 
+extern void isr_default_stub();
+
 typedef struct isr_reg {
    uint32_t ds; /* Data segment selector */
    uint32_t edi, esi, ebp, esp, ebx, edx, ecx, eax; /* Pushed by pusha. */
@@ -77,5 +80,6 @@ void init_isr();
 void isr_handler(isr_reg_t r);
 void irq_handler(isr_reg_t r);
 void new_handler(uint8_t intr, isr_h handler);
+void irq_unmsk();
 
 #endif

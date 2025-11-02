@@ -1,28 +1,25 @@
-#include "ports.h"
-#include "utils.h"
-#include "panic.h"
-#include "../libc/stdio.h"
-#include "isr.h"
-#include "../drivers/keyboard.h"
-#include "vsh.h"
-#include "wdt.h"
+#include "k_exec.h"
 
 void init(uint8_t mode);
 void norace(uint8_t h);
 
-extern unsigned int __bss_start;
-extern unsigned int __bss_end;
+extern unsigned char __bss_start;
+extern unsigned char __bss_end;
 extern uint16_t kb_popper;
+extern uint16_t kb_pusher;
+extern uint16_t kb_buff_size;
+extern char keybuff[256];
+
 
 void k_main(){
-	printi(kb_popper);
+	printsln("Boot OK");
 	init(1);
-	printsln("Finished boot sequence");
+	printsln("init 1 finished. Wait 100ms");
 	stall_time(100);
 	clrscr();
 	printsln("                                vSOS v1.0 beta\n");
+	irq_unmsk();
 	while(1){
-
 		shell();
 	}
 }
@@ -33,20 +30,28 @@ void init(uint8_t level){
 			__asm__ __volatile__("hlt");
 			break;
 		case 1:
+			__asm__ __volatile__("cli");
 			init_isr();
-			__asm__ __volatile__("sti");
+			printsln("ISRs OK");
 			init_keyboard();
+			printsln("Keyboard OK");
 			init_timer(50);
 			reset_watchdog(100);
+			printsln("Timer OK");
+			printsln("");
+			__asm__ __volatile__("sti");
 			break;
 	}
 
 }
 
+
 void zero_bss() {
-    unsigned int *p = &__bss_start;
-    unsigned int *end = &__bss_end;
-    while (p < end) {
-        *p++ = 0;
-    }
+	// return;
+    unsigned char *p = (unsigned char *) &__bss_start;
+    unsigned char *end = (unsigned char *) &__bss_end;
+    
+	while (p < end) {
+		*p++ = 0;
+	}
 }

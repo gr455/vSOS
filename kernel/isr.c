@@ -1,10 +1,15 @@
 #include "isr.h"
-#include "../libc/string.h"
 
 //global
 isr_h handlers[256];
 
+void init_idt_zero() {
+    for (int i = 0; i < 47; i++) init_idt(i, (uint32_t)isr_default_stub);
+    for (int i = 0; i < 256; i++) handlers[i] = 0;
+}
+
 void init_isr() {
+    init_idt_zero();
 	/* Map system ISRs */
 	init_idt(0, (uint32_t)isr0);
 	init_idt(1, (uint32_t)isr1);
@@ -58,9 +63,6 @@ void init_isr() {
 
     port_byte_out(0x21, 0x01);
     port_byte_out(0xA1, 0x01);
-    port_byte_out(0x21, 0x0);
-    port_byte_out(0xA1, 0x0);
-
     // restore masks
     port_byte_out(0x21, mask_m);
     port_byte_out(0xA1, mask_s);
@@ -128,31 +130,43 @@ char * exception_messages[] = {
 void isr_handler(isr_reg_t r){
     char s[3];
     int_to_ascii(r.int_no, s);
-    prints(s);
-    prints(": ");
-    prints(exception_messages[r.int_no]);
+    printe(s);
+    printe(": ");
+    printe(r.int_no > 32 ? "INVALID ISR" : exception_messages[r.int_no]);
     prints("\n");
 }
 
+void irq_eoi(isr_reg_t r){
+    /* EOI */
+    if(r.int_no > 40) // slave
+        port_byte_out(0xa0, 0x20);
+
+    // master
+    port_byte_out(0x20, 0x20);
+}
+
 void irq_handler(isr_reg_t r){
-
-	/* EOI */
-	if(r.int_no > 40) // slave
-		port_byte_out(0xa0, 0x20);
-
-	// master
-	port_byte_out(0x20, 0x20);
-
 	/* handle */
 
 	// handler has a value of offset in code segment
 	// handler itself is in data segment, but the value offsets code segment
 	// hence works with non flat gdt model
-	if(handlers[r.int_no] == 0) return; // not implemented
+	if(handlers[r.int_no] == 0) {
+        irq_eoi(r);
+        return;
+    } // not implemented
 	isr_h handler = handlers[r.int_no];
 	handler(r);
+    irq_eoi(r);
 }
 
 void new_handler(uint8_t intr, isr_h handler){
 	handlers[intr] = handler;
+}
+
+void irq_unmsk() {
+    uint8_t mask = port_byte_in(0x21);
+    // mask &= ~0x1; // unmask timer
+    mask &= ~0x2; // unmask keyboard
+    port_byte_out(0x21, mask);
 }

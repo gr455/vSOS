@@ -2,24 +2,39 @@
 
 uint8_t caps = 0;
 char keybuff[MAX_KEYBUFF_S] = {0};  // Single character buffer
-uint16_t kb_pusher = 0;
-uint16_t kb_popper = 0;
-uint16_t kb_buff_size = 0;
+volatile uint16_t kb_pusher = 0;
+volatile uint16_t kb_popper = 0;
+volatile uint16_t kb_buff_size = 0;
 
 static void keyboard_callback(isr_reg_t regs) {
     uint8_t scancode = port_byte_in(0x60);
     if(scancode == 0x1c) {
+		mask_keybr_intr();
         if (kb_buff_size < MAX_KEYBUFF_S) {
             keybuff[kb_pusher] = '\n';
             kb_pusher = (kb_pusher + 1) % MAX_KEYBUFF_S;
             kb_buff_size++;
         }
+		unmask_keybr_intr();
     } else {
         handle_stroke(scancode);
     }
 }
 
 void init_keyboard(){
+	kb_pusher = 0;
+	kb_popper = 0;
+	// printi(kb_pusher);
+	// printsln("");
+	// printi(kb_popper);
+	// printsln("");
+	// printi((int)keybuff);
+	// printsln("now greetings to the world");
+	// for (int i = 0; i < MAX_KEYBUFF_S; i++) {
+	// 	printi(keybuff[i]);
+	// 	prints(" ");
+	// }
+	// printsln("");
 	new_handler(0x21, keyboard_callback); // at irq 1, isr 33
 }
 
