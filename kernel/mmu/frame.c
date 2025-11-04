@@ -1,6 +1,6 @@
 #include "frame.h"
 
-uint32_t get_phys_start(frame* f) {
+char* get_phys_start(frame* f) {
 	return f->phys;
 }
 

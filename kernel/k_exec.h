@@ -9,6 +9,7 @@
 #include "../drivers/keyboard.h"
 #include "vsh.h"
 #include "wdt.h"
+#include "mmu/frame_controller.h"
 
 void init(uint8_t mode);
 

@@ -5,20 +5,16 @@
 ;  * 		loads kernel from disk into memory(at [es:bx])
 ;  */
 
-
 [bits 16]
 
 kernel_ld:
 	pusha
-	mov bx, KRL_LD_MSG
-	call print
-	call print_ln
-
-	; reading base 0x02 from disk
-	mov bx, KERNEL_OFFSET ; 
-	mov dh, 31 ; number of sectors
-
-	mov dl, [BOOT_DRIVE]
+	; reading from LBA 1 (sector 2) for 3000 sectors
+	mov bx, KERNEL_OFFSET
+	mov dh, 127 ; max sectors per read
+	mov cx, 3000 ; total sectors
+	
+	mov dl, 0x80
 	call dsk_ld
 	popa
 

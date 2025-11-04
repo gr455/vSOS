@@ -1,37 +1,67 @@
 #include "stdio.h"
 
-void mprints(char * s, unsigned int length){
-	int i = 0;
-	while(i < length) vga_set_chr(s[i++], 0xf);
+void vga_print_color(const char *s, uint8_t color) {
+	unsigned int i = 0;
+	while (s[i])
+		vga_set_chr(s[i++], color);
 }
 
-void prints(char * s){
-	unsigned int i = 0;
-	while(s[i]) vga_set_chr(s[i++], 0xf);
+void mprints(char *s, unsigned int length) {
+	char temp[length + 1];
+	for (unsigned int i = 0; i < length; i++) {
+		temp[i] = s[i];
+	}
+	temp[length] = '\0';
+	vga_print_color(temp, 0xf);
 }
 
-void printsln(char * s){
-	unsigned int i = 0;
-	while(s[i]) vga_set_chr(s[i++], 0xf);
+void prints(char *s) {
+	vga_print_color(s, 0xf);
+}
+
+void printsln(char *s) {
+	vga_print_color(s, 0xf);
 	vga_set_chr('\n', 0xf);
 }
+void printe(const char *e) {          // red
+	vga_print_color(e, 0xC);
+}
 
-void printe(char * e){
-	unsigned int i = 0;
-	while(e[i]) vga_set_chr(e[i++], 0xc);
+void printeln(const char *e) {
+	vga_print_color(e, 0xC);
+	vga_set_chr('\n', 0xC);
+}
+
+void printsucs(const char *s) {       // green
+	vga_print_color(s, 0x2);
+}
+
+void printsucsln(const char *s) {
+	vga_print_color(s, 0x2);
+	vga_set_chr('\n', 0x2);
+}
+
+void printinfs(const char *inf) {     // blue
+	vga_print_color(inf, 0x1);
+}
+
+void printinfsln(const char *inf) {
+	vga_print_color(inf, 0x1);
+	vga_set_chr('\n', 0x1);
 }
 
 void printc(char c) {
-	vga_set_chr(c, 0xf);
+	char temp[2] = {c, '\0'};
+	vga_print_color(temp, 0xf);
 }
 
 // max digits = 16
 void printi(int i) {
 	char is[16];
 	int_to_ascii(i, is);
-	prints(is);
+	vga_print_color(is, 0xf);
 }
 
-void clrscr(){
+void clrscr() {
 	vga_clr();
 }

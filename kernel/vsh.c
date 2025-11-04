@@ -15,11 +15,12 @@ void __dbg_printespbsp() {
 	int_to_ascii(ebp, ebps);
 	int_to_ascii(esp, esps);
 
-	prints("-------------\nebp: ");
+	printinfs("-------------\n");
+	prints("ebp: ");
 	printsln(ebps);
 	prints("esp: ");
 	printsln(esps);
-	prints("-------------\n");
+	printinfs("-------------\n");
 }
 
 void shell(){

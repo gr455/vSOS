@@ -5,14 +5,10 @@ void norace(uint8_t h);
 
 extern unsigned char __bss_start;
 extern unsigned char __bss_end;
-extern uint16_t kb_popper;
-extern uint16_t kb_pusher;
-extern uint16_t kb_buff_size;
-extern char keybuff[256];
-
+extern unsigned char __kernel_heap_start;
 
 void k_main(){
-	printsln("Boot OK");
+	printsucsln("Boot OK");
 	init(1);
 	printsln("init 1 finished. Wait 100ms");
 	stall_time(100);
@@ -32,24 +28,32 @@ void init(uint8_t level){
 		case 1:
 			__asm__ __volatile__("cli");
 			init_isr();
-			printsln("ISRs OK");
+			printsucsln("ISRs OK");
 			init_keyboard();
-			printsln("Keyboard OK");
+			printsucsln("Keyboard OK");
 			init_timer(50);
 			reset_watchdog(100);
-			printsln("Timer OK");
+			printsucsln("Timer OK");
 			printsln("");
+			// fctl_init((char*)&__kernel_heap_start, 40 * 1024 * 1024); // up to 32 MiB
+			printsucsln("MMU OK");
 			__asm__ __volatile__("sti");
 			break;
 	}
 
 }
 
-
+// TODO: probably some define byte is getting overwritten here. Call this wayyyy before kernel entry.
 void zero_bss() {
-	// return;
+	return;
     unsigned char *p = (unsigned char *) &__bss_start;
     unsigned char *end = (unsigned char *) &__bss_end;
+	printsucs("BSS starts at: ");
+	printi((uint32_t)&__bss_start);
+	printsln("");
+	printsucs("BSS ends at: ");
+	printi((uint32_t)&__bss_end);
+	printsln("");
     
 	while (p < end) {
 		*p++ = 0;

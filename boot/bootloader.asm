@@ -1,37 +1,47 @@
-; load at bootsector in memory
-[org 0x7c00]
+; Second stage
+[org 0x7e00]
 
 KERNEL_OFFSET: equ 0x1000
+KERNEL_LBA_START: equ 2
 
-; ** sector 1 : boot **
+; ** second stage boot **
+second_stage:
+	; Use saved drive from Stage 1
+	mov [BOOT_DRIVE], dl
 
-boot:
-mov [BOOT_DRIVE], dl ; BIOS stores boot drive in dl
+	cli
+	xor ax, ax
+	mov ds, ax
+	mov es, ax
+	mov ss, ax
+	mov bp, 0x9000
+	mov sp, bp
+	sti
 
-; move stack pointer away to not accidentally overwrite stack
-cli
-xor ax, ax
-mov ds, ax
-mov es, ax
-mov ss, ax
-mov bp, 0x9000
-mov sp, bp
-sti
+	mov bx, BOOT_STAGE_2_MSG
+	call print
+	call print_ln
 
-call kernel_ld
+	; Setup for kernel load
+	mov bx, KERNEL_OFFSET
+	mov es, ax  ; ES=0
 
-call use_protected
+	mov si, KERNEL_LBA_START    ; IN: si = starting LBA
+    mov dh, 127                 ; IN: dh = max sectors per read
+
+	call kernel_ld
+
+	call use_protected
 
 [bits 32]
 
 BEGIN_PM:
 	; Save only necessary registers instead of pusha
-	; We don't want to use too much space on the temopary stack.
+	; We don't want to use too much space on the temporary stack.
 	push edx
 	
 	mov edx, 0xb8000
 	sub edx, 0x2
-	
 	.clear_loop:
 		mov ebx, NONE
 		add edx, 0x2
@@ -46,7 +56,6 @@ BEGIN_PM:
 	mov ebx, BOOT_MSG
 	mov edx, 0xb8000
 	call print_str_32p
-	
 	; Jump to kernel
 	jmp KERNEL_OFFSET
 
@@ -60,14 +69,8 @@ BEGIN_PM:
 %include "32_prot_switch.asm"
 %include "kernel_ld.asm"
 
-
-BOOT_MSG: dw "Booting into vSOS", 0
-KRL_LD_MSG: dw "Loading kernel...", 0
-BOOT_DRIVE: db 0x0 ; hard drive
-NONE: db " "
-
-; bootloader magic number
-
-times 510 - ($ - $$) db 0
-dw 0xaa55
-
+BOOT_STAGE_2_MSG: db "Bootloader in stage 2.", 0
+BOOT_MSG: db "Booting into vSOS", 0
+KRL_LD_MSG: db "Loading kernel...", 0
+BOOT_DRIVE: db 0x80 ; hard drive (overwritten by Stage 1)
+NONE: dw " "
