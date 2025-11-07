@@ -14,7 +14,7 @@ second_stage:
 	mov ds, ax
 	mov es, ax
 	mov ss, ax
-	mov bp, 0x9000
+	mov bp, 0x7000 ; this is lower than stage 1. should be fine.
 	mov sp, bp
 	sti
 
@@ -24,13 +24,12 @@ second_stage:
 
 	; Setup for kernel load
 	mov bx, KERNEL_OFFSET
+	xor ax, ax
 	mov es, ax  ; ES=0
-
-	mov si, KERNEL_LBA_START    ; IN: si = starting LBA
-    mov dh, 127                 ; IN: dh = max sectors per read
-
+	; mov si, KERNEL_LBA_START    ; IN: si = starting LBA
+    ; mov dh, 127                 ; IN: dh = max sectors per read
+	mov dl, 0x80        ; IN: dl = drive
 	call kernel_ld
-
 	call use_protected
 
 [bits 32]
@@ -69,7 +68,7 @@ BEGIN_PM:
 %include "32_prot_switch.asm"
 %include "kernel_ld.asm"
 
-BOOT_STAGE_2_MSG: db "Bootloader in stage 2.", 0
+BOOT_STAGE_2_MSG: db "Bootloader in stage 2", 0
 BOOT_MSG: db "Booting into vSOS", 0
 KRL_LD_MSG: db "Loading kernel...", 0
 BOOT_DRIVE: db 0x80 ; hard drive (overwritten by Stage 1)
