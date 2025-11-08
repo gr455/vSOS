@@ -10,9 +10,14 @@
 [bits 16]
 
 kernel_ld:
+	; push dx
+	; mov dx, [current_lba]
+	; call print_hex
+	; call print_ln
+	; pop dx
     pusha
-    mov word [sectors_left], 6144       ; total = 3 MiB
-    mov dword [current_lba], 1          ; start reading at LBA 1 - 0 is bootsector, skipt it.
+    mov word [sectors_left], 39
+    mov dword [current_lba], 1 ; start reading at LBA 1 - 0 is bootsector, skipt it.
 
 .load_loop:
 
@@ -22,9 +27,9 @@ kernel_ld:
 
     ; --- decide how many sectors to read this call ---
     mov cx, ax
-    cmp cx, 31
+    cmp cx, 39
     jbe .use_cx
-    mov cx, 31
+    mov cx, 39
 .use_cx:
 
     ; dh = number of sectors
@@ -32,11 +37,6 @@ kernel_ld:
 
     ; call dsk_ld (uses dl, es:bx, dh)
     push cx
-	; push dx
-	; mov dx, [current_lba]
-	; call print_hex
-	; call print_ln
-	; pop dx
 
     call dsk_ld
 	
@@ -73,7 +73,6 @@ kernel_ld:
     jmp .load_loop
 
 .done:
-	jmp $
     popa
     ret
 

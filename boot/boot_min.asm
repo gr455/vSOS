@@ -2,6 +2,7 @@
 [org 0x7c00]
 
 SECOND_STAGE_OFFSET: equ 0x7e00
+SECOND_STAGE_SEGMENT: equ 0x0
 
 boot_min:
 	mov [BOOT_DRIVE], dl ; BIOS stores boot drive in dl
@@ -12,18 +13,22 @@ boot_min:
 	mov ds, ax
 	mov es, ax
 	mov ss, ax
-	mov bp, 0x9000
+	mov bp, 0x7000
 	mov sp, bp
 	sti
 
 	; Load second stage (sectors 2-4) into memory at 0x7E00
 	mov bx, SECOND_STAGE_OFFSET
+    push ax
+    mov ax, SECOND_STAGE_SEGMENT
+    mov es, ax
+    pop ax
 	mov dh, 4 ; must fit stage 2 within ~2KiB (4 sectors)
 	mov dl, [BOOT_DRIVE]
 	call load_second_stage
 
 	; Jump to second stage
-	jmp SECOND_STAGE_OFFSET
+	jmp SECOND_STAGE_SEGMENT:SECOND_STAGE_OFFSET
 
 ; Simple routine to load sectors (starting sector 2)
 load_second_stage:

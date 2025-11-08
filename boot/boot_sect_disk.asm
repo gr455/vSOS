@@ -40,6 +40,7 @@ dsk_ld:
 	call print_hex
 	call print_ln
 	pop dx
+
 	int 0x13
 	; push dx
 	; mov dx, bx

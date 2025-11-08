@@ -23,7 +23,7 @@ cd ../ \
 && i386-elf-objcopy -O binary ../kernel/bin/kernel.elf ../kernel/bin/kernel.bin \
 && cat ../boot/bin/boot.bin ../kernel/bin/kernel.bin > os-image \
 && echo "done" \
-&& truncate -s 1536k os-image \
+&& truncate -s 20k os-image \
 && find . -type f -name '*.iso' -delete \
 && mkisofs -o os-image.iso -b os-image . \
 && echo "iso image created"

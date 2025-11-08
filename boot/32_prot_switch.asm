@@ -24,5 +24,5 @@ protected_mode:
 	; temp stack. try not to push too much here.
 	mov ebp, 0x493E0
 	mov esp, ebp
-
+	
 	call BEGIN_PM ; call label where PM is to be started

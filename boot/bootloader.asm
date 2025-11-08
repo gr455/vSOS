@@ -21,7 +21,6 @@ second_stage:
 	mov bx, BOOT_STAGE_2_MSG
 	call print
 	call print_ln
-
 	; Setup for kernel load
 	mov bx, KERNEL_OFFSET
 	xor ax, ax
@@ -38,7 +37,7 @@ BEGIN_PM:
 	; Save only necessary registers instead of pusha
 	; We don't want to use too much space on the temporary stack.
 	push edx
-	
+
 	mov edx, 0xb8000
 	sub edx, 0x2
 	.clear_loop:
@@ -50,7 +49,6 @@ BEGIN_PM:
 	
 	; Restore saved register
 	pop edx
-	
 	; Print boot message
 	mov ebx, BOOT_MSG
 	mov edx, 0xb8000
