@@ -11,19 +11,21 @@ cd ../ \
 && cat bin/boot_stage1.bin bin/boot_stage2.bin > bin/boot.bin \
 && cd ../image/ \
 && cd ../kernel/doto/ \
-&& i386-elf-gcc -c -ffreestanding -fno-stack-protector -nostdlib $(find ../ -type f -name "*.c") \
-&& cd ../../drivers/doto/ \
+&& i386-elf-gcc -c -ffreestanding -fno-stack-protector -nostdlib ../*.c \
+&& cd ../mmu/doto/ \
+&& i386-elf-gcc -c -ffreestanding -fno-stack-protector -nostdlib ../*.c \
+&& cd ../../../drivers/doto/ \
 && i386-elf-gcc -c -ffreestanding -fno-stack-protector -nostdlib ../*.c \
 && cd ../../libc/doto/ \
 && i386-elf-gcc -c -ffreestanding -fno-stack-protector -nostdlib ../*.c \
 && cd ../../image/ \
 && nasm ../kernel/kernel_entry.asm -f elf -o ../kernel/doto/entry/kernel_entry.o \
 && nasm ../kernel/intr.asm -f elf -o ../kernel/doto/intr.o \
-&& i386-elf-ld -o ../kernel/bin/kernel.elf -T ../kernel/vsos.ld ../kernel/doto/entry/kernel_entry.o ../kernel/doto/*.o ../libc/doto/*.o ../drivers/doto/*.o \
+&& i386-elf-ld -o ../kernel/bin/kernel.elf -T ../kernel/vsos.ld ../kernel/doto/entry/kernel_entry.o ../kernel/doto/*.o ../libc/doto/*.o ../drivers/doto/*.o ../kernel/mmu/doto/*.o \
 && i386-elf-objcopy -O binary ../kernel/bin/kernel.elf ../kernel/bin/kernel.bin \
 && cat ../boot/bin/boot.bin ../kernel/bin/kernel.bin > os-image \
 && echo "done" \
-&& truncate -s 20k os-image \
+&& truncate -s 40k os-image \
 && find . -type f -name '*.iso' -delete \
 && mkisofs -o os-image.iso -b os-image . \
 && echo "iso image created"

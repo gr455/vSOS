@@ -35,7 +35,7 @@ void init(uint8_t level){
 			reset_watchdog(100);
 			printsucsln("Timer OK");
 			printsln("");
-			// fctl_init((char*)&__kernel_heap_start, 40 * 1024 * 1024); // up to 32 MiB
+			fctl_init((char*)&__kernel_heap_start, 40 * 1024 * 1024); // up to 32 MiB
 			printsucsln("MMU OK");
 			__asm__ __volatile__("sti");
 			break;
@@ -45,7 +45,6 @@ void init(uint8_t level){
 
 // TODO: probably some define byte is getting overwritten here. Call this wayyyy before kernel entry.
 void zero_bss() {
-	return;
     unsigned char *p = (unsigned char *) &__bss_start;
     unsigned char *end = (unsigned char *) &__bss_end;
 	printsucs("BSS starts at: ");

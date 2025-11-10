@@ -71,3 +71,7 @@ BOOT_MSG: db "Booting into vSOS", 0
 KRL_LD_MSG: db "Loading kernel...", 0
 BOOT_DRIVE: db 0x80 ; hard drive (overwritten by Stage 1)
 NONE: dw " "
+
+; I need stage 2 to span exactly two disk sectors so that
+; rest of the kernel's start point is deterministic
+times 1024 - ($ - $$) db 0
