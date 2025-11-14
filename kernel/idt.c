@@ -2,7 +2,7 @@
 
 // global
 
-idt_entry_t idt[47];
+idt_entry_t idt[256];
 idt_ptr_t idt_ptr_o;
 
 void init_idt(int index, uint32_t isr){

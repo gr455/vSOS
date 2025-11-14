@@ -1,5 +1,5 @@
 ; Second stage
-[org 0x7e00]
+[org 0xe82E]
 
 KERNEL_OFFSET: equ 0x1000
 KERNEL_LBA_START: equ 2
@@ -14,7 +14,7 @@ second_stage:
 	mov ds, ax
 	mov es, ax
 	mov ss, ax
-	mov bp, 0x7000 ; this is lower than stage 1. should be fine.
+	mov bp, 0xfffe
 	mov sp, bp
 	sti
 

@@ -11,7 +11,7 @@ void k_main(){
 	printsucsln("Boot OK");
 	init(1);
 	printsln("init 1 finished. Wait 100ms");
-	stall_time(100);
+	// stall_time(100);
 	clrscr();
 	printsln("                                vSOS v1.0 beta\n");
 	irq_unmsk();
@@ -35,7 +35,7 @@ void init(uint8_t level){
 			reset_watchdog(100);
 			printsucsln("Timer OK");
 			printsln("");
-			fctl_init((char*)&__kernel_heap_start, 40 * 1024 * 1024); // up to 32 MiB
+			// fctl_init((char*)&__kernel_heap_start, 40 * 1024 * 1024); // up to 32 MiB
 			printsucsln("MMU OK");
 			__asm__ __volatile__("sti");
 			break;
@@ -43,7 +43,6 @@ void init(uint8_t level){
 
 }
 
-// TODO: probably some define byte is getting overwritten here. Call this wayyyy before kernel entry.
 void zero_bss() {
     unsigned char *p = (unsigned char *) &__bss_start;
     unsigned char *end = (unsigned char *) &__bss_end;

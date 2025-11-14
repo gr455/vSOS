@@ -1,7 +1,7 @@
 ; load at bootsector in memory
 [org 0x7c00]
 
-SECOND_STAGE_OFFSET: equ 0x7e00
+SECOND_STAGE_OFFSET: equ 0xe82E
 SECOND_STAGE_SEGMENT: equ 0x0
 
 boot_min:
@@ -13,7 +13,7 @@ boot_min:
 	mov ds, ax
 	mov es, ax
 	mov ss, ax
-	mov bp, 0x7000
+	mov bp, 0xfffe
 	mov sp, bp
 	sti
 

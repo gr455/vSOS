@@ -4,7 +4,7 @@
 isr_h handlers[256];
 
 void init_idt_zero() {
-    for (int i = 0; i < 47; i++) init_idt(i, (uint32_t)isr_default_stub);
+    for (int i = 0; i < 256; i++) init_idt(i, (uint32_t)isr_default_stub);
     for (int i = 0; i < 256; i++) handlers[i] = 0;
 }
 
@@ -166,7 +166,7 @@ void new_handler(uint8_t intr, isr_h handler){
 
 void irq_unmsk() {
     uint8_t mask = port_byte_in(0x21);
-    // mask &= ~0x1; // unmask timer
+    mask &= ~0x1; // unmask timer
     mask &= ~0x2; // unmask keyboard
     port_byte_out(0x21, mask);
 }

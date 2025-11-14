@@ -6,7 +6,6 @@ use_protected:
 	mov eax, cr0 ; cr0 is 32 bits. it is allowed to use 32 bit registers in 16 bit mode
 	or eax, 0x1 ; flip enable protected bit
 	mov cr0, eax
-
 	jmp BOOT_GDT_CODE:protected_mode ; far jumping from NOSEGMENT to BOOT_GDT_CODE to flush pipeline and finish tasks before jumping
 	; far jump switches code segment(cs) register
 
@@ -20,9 +19,8 @@ protected_mode:
 	mov ss, ax
 	mov fs, ax
 	mov gs, ax
-	
 	; temp stack. try not to push too much here.
 	mov ebp, 0x493E0
 	mov esp, ebp
-	
+
 	call BEGIN_PM ; call label where PM is to be started

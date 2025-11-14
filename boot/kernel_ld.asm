@@ -16,7 +16,7 @@ kernel_ld:
 	; call print_ln
 	; pop dx
     pusha
-    mov word [sectors_left], 31
+    mov word [sectors_left], 75
     mov dword [current_lba], 3 ; start reading at LBA 1 - 0 is bootsector, skipt it and 1&2 are stage 2 BL skip that as well.
 
 .load_loop:
@@ -27,9 +27,9 @@ kernel_ld:
 
     ; --- decide how many sectors to read this call ---
     mov cx, ax
-    cmp cx, 39
+    cmp cx, 31
     jbe .use_cx
-    mov cx, 100
+    mov cx, 31
 .use_cx:
 
     ; dh = number of sectors
@@ -38,7 +38,20 @@ kernel_ld:
     ; call dsk_ld (uses dl, es:bx, dh)
     push cx
 
+	; push bx
+	; mov bx, wow_msg
+	; call print
+	; call print_ln
+	; pop bx
+
     call dsk_ld
+
+	; push bx
+	; mov bx, bruh_msg
+	; call print
+	; call print_ln
+	; pop bx
+
 	
     pop cx ; 31 sectors read
 
@@ -79,3 +92,5 @@ kernel_ld:
 
 ; --- temporary storage ---
 sectors_left dw 0
+bruh_msg db "bruh", 0
+wow_msg db "wow", 0

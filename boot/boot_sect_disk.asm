@@ -47,20 +47,38 @@ dsk_ld:
 	; call print_hex
 	; call print_ln
 	; pop dx
-	push bx
+	; push bx
 	; mov bx, SEC_ERR_MSG
 	; call print
-	pop bx
+	; pop bx
 
     jc dsk_err                   ; CF=1 → error
 
     ; === Success check ===
     cmp ah, 0
     jne sec_err                  ; just in case
+    
 
     pop si
     pop ds
+    ; push dx
+    ; mov dx, sp
+    ; call print_hex
+    ; call print_ln
+    ; mov dx, bp
+    ; call print_hex
+    ; call print_ln
+    ; pop dx
+
+    ; jmp $
     popa
+
+    ; push bx
+	; mov bx, bruh_msg
+	; call print
+	; call print_ln
+	; pop bx
+
     ret
 
 dsk_err:
