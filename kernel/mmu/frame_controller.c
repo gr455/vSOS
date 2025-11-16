@@ -1,7 +1,7 @@
 #include "frame_controller.h"
 
 frame_control_t frame_control_block;
-frame all_frames[1024]; // support up to 10MiB of frames for now
+frame all_frames[1024]; // support up to 4MiB of frames for now
 frame_list_node all_frame_nodes[1024];
 
 void fctl_init(char* start_phys, uint32_t size) {
