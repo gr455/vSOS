@@ -8,3 +8,4 @@
 page_directory_t kpd;
 
 void pgctl_init();
+extern void set_paging_enable(uint32_t kpd_phys_addr);

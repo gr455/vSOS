@@ -1,11 +1,5 @@
 #include "page_controller.h"
 
-void pgctl_init() {
-	pd_init(&kpd)
-	kpd_init_lowmem();
-	set_paging_enable((uint32_t)&kpd);
-}
-
 // initialize lower memory one-to-one with physical memory
 // check: should not require to initialize <0x1000 (below kernel start) but check.
 void kpd_init_lowmem() {
@@ -24,4 +18,10 @@ void kpd_init_lowmem() {
 		page_directory_t* pt = (page_directory_t*)pd_get_entry_phys_addr(&kpd, pd_index);
 		pd_set_entry(pt, pt_index, addr, PDE_PRESENT | PDE_RW);
 	}
+}
+
+void pgctl_init() {
+	pd_init(&kpd);
+	kpd_init_lowmem();
+	set_paging_enable((uint32_t)&kpd);
 }
