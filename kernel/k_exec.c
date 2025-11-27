@@ -11,7 +11,7 @@ void k_main(){
 	printsucsln("Boot OK");
 	init(1);
 	printsln("init 1 finished. Wait 100ms");
-	// stall_time(100);
+	stall_time(100);
 	clrscr();
 	printsln("                                vSOS v1.0 beta\n");
 	irq_unmsk();
