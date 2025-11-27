@@ -35,11 +35,15 @@ dsk_ld:
     ; === Perform INT 13h AH=42h read ===
     mov si, dap
     mov ah, 0x42
-	push dx
-	mov dx, bx
-	call print_hex
-	call print_ln
-	pop dx
+
+	; push dx
+	; mov dx, es
+	; call print_hex
+	; call print_ln
+    ; mov dx, bx
+	; call print_hex
+	; call print_ln
+	; pop dx
 
 	int 0x13
 	; push dx

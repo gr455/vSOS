@@ -1,7 +1,9 @@
 ; Second stage
 [org 0xe82E]
 
-KERNEL_OFFSET: equ 0x1000
+KERNEL_OFFSET: equ 0x0000
+KERNEL_SEGMENT: equ 0x1000
+KERNEL_ADDR_PROT: equ KERNEL_SEGMENT * 16 + KERNEL_OFFSET
 KERNEL_LBA_START: equ 2
 
 ; ** second stage boot **
@@ -22,9 +24,10 @@ second_stage:
 	call print
 	call print_ln
 	; Setup for kernel load
+	mov ax, KERNEL_SEGMENT
+	mov es, ax
 	mov bx, KERNEL_OFFSET
 	xor ax, ax
-	mov es, ax  ; ES=0
 	; mov si, KERNEL_LBA_START    ; IN: si = starting LBA
     ; mov dh, 127                 ; IN: dh = max sectors per read
 	mov dl, 0x80        ; IN: dl = drive
@@ -54,7 +57,7 @@ BEGIN_PM:
 	mov edx, 0xb8000
 	call print_str_32p
 	; Jump to kernel
-	jmp KERNEL_OFFSET
+	jmp KERNEL_ADDR_PROT
 
 [bits 16]
 

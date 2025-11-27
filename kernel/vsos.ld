@@ -2,7 +2,7 @@ ENTRY(_start)
 
 SECTIONS
 {
-    . = 0x001000;
+    . = 0x010000;
 
     .text ALIGN(4K) : {
         *(.multiboot_header)
