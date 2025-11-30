@@ -8,16 +8,16 @@
 #define PDE_PWT          0x008
 #define PDE_PCD          0x010
 #define PDE_ACCESSED     0x020
-#define PDE_DIRTY        0x040
+#define PDE_DIRTY        0x040 // PD hugepage entry only, PT all entries.
 #define PDE_HUGEPAGE     0x080 // 4MiB. Skip PT lookup. Will not be used in vSOS
-#define PDE_GLOBAL       0x100
+#define PDE_PHYS         0x100
 
 #define PDE_ADDR_MASK    0xFFFFF000 // always 4KiB aligned
 
 /**
-	A single PD entry indexes upto 4GiB of virtual memory.
-	A PD contains upto 1024 page tables. A single page table indexes upto 4MiB of virtual memory.
-	A page table contains upto 1024 pages. A single page indexes exactly 4KiB of virtual memory.
+	A single PD entry indexes upto 4MiB of virtual memory.
+	A PD contains upto 1024 page tables. A single page table indexes upto 4KiB of virtual memory.
+	Mapping a page. A single page indexes exactly 4KiB of virtual memory.
 
 	a PT entry is 4KiB though, so it can be 4KiB aligned. That makes a single PD entry 4MiB large.
 

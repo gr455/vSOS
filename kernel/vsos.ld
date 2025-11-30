@@ -24,5 +24,5 @@ SECTIONS
         __bss_end = .;
     }
 
-    __kernel_heap_start = .;
+    __kernel_heap_start = ALIGN(4K);
 }

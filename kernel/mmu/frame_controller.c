@@ -5,7 +5,6 @@ frame all_frames[1024]; // support up to 4MiB of frames for now
 frame_list_node all_frame_nodes[1024];
 
 void fctl_init(char* start_phys, uint32_t size) {
-	printsucs("Initializing frame controller with heap starting at physical address: ");
 	uint32_t frames = min((uint32_t)(size) / PAGE_SIZE, 8192);
 	char* phys = start_phys;
 	for (uint32_t i = 0; i < frames; i++) {
@@ -15,11 +14,6 @@ void fctl_init(char* start_phys, uint32_t size) {
 		};
 		all_frames[i] = f;
 		phys += PAGE_SIZE;
-	}
-
-	if (frames < 8192) {
-		panic("Could not allocate 32 MiB of heap space for kernel frames");
-		return;
 	}
 
 	for (int i = 0; i < frames; i++) {

@@ -10,6 +10,7 @@
 #include "vsh.h"
 #include "wdt.h"
 #include "mmu/frame_controller.h"
+#include "paging/page_controller.h"
 
 void init(uint8_t mode);
 

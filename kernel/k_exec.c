@@ -8,9 +8,9 @@ extern unsigned char __bss_end;
 extern unsigned char __kernel_heap_start;
 
 void k_main(){
-	printsucsln("Boot OK");
+	prints("Boot      "); printsucsln("OK");
 	init(1);
-	printsln("init 1 finished. Wait 100ms");
+	printsln("init 1 finished. Please wait...");
 	stall_time(100);
 	clrscr();
 	printsln("                                vSOS v1.0 beta\n");
@@ -27,16 +27,26 @@ void init(uint8_t level){
 			break;
 		case 1:
 			__asm__ __volatile__("cli");
+			prints("ISRs      ");
 			init_isr();
-			printsucsln("ISRs OK");
+			printsucsln("OK");
+			prints("Keyboard  ");
 			init_keyboard();
-			printsucsln("Keyboard OK");
+			printsucsln("OK");
+			prints("Timer     ");
 			init_timer(50);
 			reset_watchdog(100);
-			printsucsln("Timer OK");
+			printsucsln("OK");
+			prints("Init framectl. heap phys: ");
+			printi((uint32_t)&__kernel_heap_start);
 			printsln("");
-			// fctl_init((char*)&__kernel_heap_start, 40 * 1024 * 1024); // up to 32 MiB
-			printsucsln("MMU OK");
+			prints("MMU       ");
+			fctl_init((char*)&__kernel_heap_start, 4 * 1024 * 1024);
+			printsucsln("OK");
+			prints("Paging    ");
+			pgctl_init();
+			printsucsln("OK");
+			printsln("");
 			__asm__ __volatile__("sti");
 			break;
 	}
@@ -46,11 +56,12 @@ void init(uint8_t level){
 void zero_bss() {
     unsigned char *p = (unsigned char *) &__bss_start;
     unsigned char *end = (unsigned char *) &__bss_end;
-	printsucs("BSS starts at: ");
+	prints("BSS starts at: ");
 	printi((uint32_t)&__bss_start);
 	printsln("");
-	printsucs("BSS ends at: ");
+	prints("BSS ends at: ");
 	printi((uint32_t)&__bss_end);
+	printsln("");
 	printsln("");
     
 	while (p < end) {

@@ -16,7 +16,7 @@ kernel_ld:
 	; call print_ln
 	; pop dx
     pusha
-    mov word [sectors_left], 75
+    mov word [sectors_left], 77
     mov dword [current_lba], 3 ; start reading at LBA 1 - 0 is bootsector, skipt it and 1&2 are stage 2 BL skip that as well.
 
 .load_loop:

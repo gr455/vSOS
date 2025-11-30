@@ -1,8 +1,10 @@
 global set_paging_enable
 global set_pd
 
-; arg 0: kennel page directory physical address
+; arg 0: kernel page directory physical address
 set_paging_enable:
+	mov eax, [esp + 4]
+	push eax
 	call set_pd
 
 	mov eax, cr0
