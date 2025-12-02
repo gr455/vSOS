@@ -6,13 +6,15 @@ page_directory_t kpd;
 // check: should not require to initialize <0x1000 (below kernel start) but check.
 void kpd_init_lowmem(page_directory_t* kpd) {
 	extern uint32_t __kernel_heap_start;
-	for (uint32_t addr = _start; addr < (uint32_t)&__kernel_heap_start; addr += 0x1000) {
+	for (uint32_t addr = (uint32_t)&_start; addr < (uint32_t)&__kernel_heap_start; addr += 0x1000) {
 		uint32_t pd_index = (addr >> 22) & 0x3FF;
 		uint32_t pt_index = (addr >> 12) & 0x3FF;
 
 		uint32_t pd_entry_flags = PDE_PRESENT | PDE_RW;
 		if (pd_get_entry_phys_addr(kpd, pd_index) == 0) {
 			frame* new_frame = fctl_get_free_frame();
+			printi((uint32_t)new_frame->phys);
+			printsln(" <- new PT frame allocated");
 			pd_set_entry(kpd, pd_index, (uint32_t)new_frame->phys, pd_entry_flags);
 			pd_init((page_directory_t*)new_frame->phys);
 		}
