@@ -13,7 +13,7 @@ void k_main(){
 	printsln("init 1 finished. Please wait...");
 	stall_time(100);
 	clrscr();
-	printsln("                                vSOS v1.0 beta\n");
+	printsln("                                vSOS v1.0\n");
 	irq_unmsk();
 	while(1){
 		shell();
