@@ -15,16 +15,17 @@
 #define PDE_ADDR_MASK    0xFFFFF000 // always 4KiB aligned
 
 /**
-	A single PD entry indexes upto 4MiB of virtual memory.
-	A PD contains upto 1024 page tables. A single page table indexes upto 4KiB of virtual memory.
-	Mapping a page. A single page indexes exactly 4KiB of virtual memory.
-
-	a PT entry is 4KiB though, so it can be 4KiB aligned. That makes a single PD entry 4MiB large.
-
-	TODO: schooch the kernel to the bottom of all BL stages otherwise I don't have enough memory
-	to allocate all the PTs and PDs.
-
-*/
+ * - A PD has 1024 entries. A PD maps 4GiB of virtual address space.
+ *   Each PD entry points to one PT.
+ *
+ * - A PT has 1024 entries. A PT maps 4 MiB of virtual address space.
+ *   Each PT entry maps one 4 KiB physical page.
+ *
+ *
+ *  A PD/PT entry is 4 bytes, 32 bits governed by defines above.
+ *  Therefore each PD/PT is 4KiB large.
+ *  Therefore both PD and PT must be 4KiB aligned.
+ */
 
 typedef struct {
 	uint32_t e; // everything bitfield, governed by the defs above
