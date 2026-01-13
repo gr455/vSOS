@@ -55,9 +55,9 @@ void printc(char c) {
 	vga_print_color(temp, 0xf);
 }
 
-// max digits = 16
+// max digits = 32
 void printi(int i) {
-	char is[16];
+	char is[32];
 	int_to_ascii(i, is);
 	vga_print_color(is, 0xf);
 }

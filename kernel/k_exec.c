@@ -41,7 +41,7 @@ void init(uint8_t level){
 			printi((uint32_t)&__kernel_heap_start);
 			printsln("");
 			prints("MMU       ");
-			fctl_init((char*)&__kernel_heap_start, 4 * 1024 * 1024);
+			fctl_init((char*)&__kernel_heap_start + FRAMECTL_KPG_START_FRAME_OFFSET, 4 * 1024 * 1024);
 			printsucsln("OK");
 			prints("Paging    ");
 			pgctl_init();

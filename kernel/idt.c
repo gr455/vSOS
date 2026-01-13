@@ -1,4 +1,5 @@
 #include "idt.h"
+#include "panic.h"
 
 // global
 

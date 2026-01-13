@@ -1,4 +1,5 @@
 #include "isr.h"
+#include "panic.h"
 
 //global
 isr_h handlers[256];
@@ -132,8 +133,7 @@ void isr_handler(isr_reg_t r){
     int_to_ascii(r.int_no, s);
     printe(s);
     printe(": ");
-    printe(r.int_no > 32 ? "INVALID ISR" : exception_messages[r.int_no]);
-    prints("\n");
+    panic(r.int_no > 32 ? "INVALID ISR" : exception_messages[r.int_no]);
 }
 
 void irq_eoi(isr_reg_t r){

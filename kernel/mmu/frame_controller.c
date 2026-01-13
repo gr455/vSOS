@@ -46,7 +46,8 @@ frame* fctl_get_free_frame() {
 	return f;
 }
 
-void fctl_free_frame(frame* f) {
+void fctl_free_frame(uint32_t phys_addr) {
+	frame* f = &all_frames[(phys_addr - (uint32_t)all_frames[0].phys) / PAGE_SIZE];
 	f->mapped = false;
 	frame_list_node* node = &all_frame_nodes[(f->phys - all_frames[0].phys) / PAGE_SIZE];
 	node->next = NULL;

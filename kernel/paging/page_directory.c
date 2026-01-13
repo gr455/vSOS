@@ -1,9 +1,12 @@
 #include "page_directory.h"
+#include "../mmu/frame_controller.h"
 
 extern void set_paging_enable(uint32_t kpd_phys_addr);
 extern void set_pd(uint32_t pd_phys_addr);
 
+// premap_entry must be -1 or index of a single page that points to scratch page for now.
 void pd_init(page_directory_t* pd) {
+    extern uint32_t __kernel_heap_start;
     for (int i = 0; i < 1024; i++) {
         pd->entries[i].e = 0;
     }

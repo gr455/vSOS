@@ -19,4 +19,4 @@ typedef struct frame_control_t {
 
 void fctl_init(char * start_phys, uint32_t size);
 frame* fctl_get_free_frame();
-void fctl_free_frame(frame* f);
+void fctl_free_frame(uint32_t phys_addr);
