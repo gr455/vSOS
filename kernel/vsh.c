@@ -74,7 +74,7 @@ void handler(char q[]){
 		char addr_s[10];
 		split(q, size_s, 1);
 		uint32_t size = stoi(size_s);
-		uint32_t addr = kmalloc(size);
+		uint32_t addr = vmalloc(size);
 		int_to_ascii(addr, addr_s);
 		printsln(addr_s);
 		return;
@@ -86,8 +86,8 @@ void handler(char q[]){
 		split(q, size_s, 2);
 		uint32_t addr = stoi(addr_s);
 		uint32_t size = stoi(size_s);
-		kfree(addr, size);
-		printsln("freed");
+		uint32_t freed = vfree(addr, size);
+		prints("freed "); printi(freed); printsln(" pages");
 		return;
 	}
 	else if (strcmp(word, "testsetmem") == 0){

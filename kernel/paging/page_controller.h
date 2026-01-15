@@ -4,7 +4,7 @@
 #include "page_directory.h"
 #include "../mmu/frame_controller.h"
 
-#define MAXPAGES 1024
+#define MAXPAGES 10240
 
 // bitset to track used pages.
 // TODO: make this more representative.
@@ -27,8 +27,10 @@ void pgctl_init();
 // uint32_t pgctl_alloc_pages(uint32_t k, bool use_cr3);
 extern void set_paging_enable(uint32_t kpd_phys_addr);
 // uint32_t pgctl_free_pages(uint32_t virt, uint32_t k);
-uint32_t kmalloc(size_t size);
-void kfree(uint32_t addr, size_t size);
+uint32_t vmalloc(size_t size);
+uint32_t vfree(uint32_t addr, size_t size);
+
+page_directory_t* switch_cr3_ctx(page_directory_t* new_pd);
 
 // test
 
