@@ -193,6 +193,7 @@ uint32_t vfree(uint32_t addr, size_t size) {
 
 void __test__k_setmem(uint32_t vaddr, char value) {
 	char* ptr = (char*)vaddr;
+	*ptr = value;
 }
 
 char __test__k_getmem(uint32_t vaddr) {
