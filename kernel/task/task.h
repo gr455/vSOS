@@ -31,4 +31,19 @@ typedef struct task {
     uint32_t stack_base; // Base of the task's stack
 } task_t;
 
-#endif
+// Task management functions
+void task_init();
+int32_t task_create(void (*entry_point)(uint32_t), uint32_t arg);
+task_t* task_get_current();
+task_t* task_get_by_pid(uint32_t pid);
+void task_schedule();
+void task_yield();
+void task_exit(uint32_t exit_code);
+void task_print_info();
+uint32_t task_get_count();
+uint32_t task_get_pid();
+void _task_copy_kernel_mappings(page_directory_t* user_pd);
+
+// Assembly functions
+extern void context_switch_asm(cpu_state_t* old_state, cpu_state_t* new_state);
+extern void jump_to_task(cpu_state_t* state);

@@ -46,6 +46,9 @@ void init(uint8_t level){
 			prints("Paging    ");
 			pgctl_init();
 			printsucsln("OK");
+			prints("Tasks     ");
+			task_init();
+			printsucsln("OK");
 			printsln("");
 			__asm__ __volatile__("sti");
 			break;

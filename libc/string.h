@@ -11,5 +11,7 @@ int strlen(char str[]);
 void split(char s[], char des[], uint8_t word);
 int strcmp(char s1[], char s2[]);
 int stoi(char s[]);
+void* memset(void* ptr, int value, size_t count);
+void* memcpy(void* dest, const void* src, size_t count);
 
 #endif

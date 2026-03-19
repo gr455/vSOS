@@ -11,6 +11,7 @@
 #include "wdt.h"
 #include "mmu/frame_controller.h"
 #include "paging/page_controller.h"
+#include "task/task.h"
 
 void init(uint8_t mode);
 

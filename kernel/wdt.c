@@ -5,16 +5,24 @@
  */
 
 #include "wdt.h"
+#include "task/task.h"
 
 uint32_t g_tick = 0;
 uint32_t g_watch = 0;
 uint32_t g_lim = 0;
 uint8_t ticking = 0;
+uint32_t schedule_interval = 10; // Schedule every 10 ticks
 
 static void timer_callback(isr_reg_t regs) {
 	reset_watchdog(10);
 	if(g_tick >= 2147483646) g_tick = 0;
 	if(g_watch != 0 && g_tick >= g_watch) cpu_watchdog_triggered();
+	
+	// Perform task scheduling every schedule_interval ticks
+	if ((g_tick % schedule_interval) == 0 && task_get_count() > 1) {
+		task_schedule();
+	}
+	
 	g_tick++;
 }
 

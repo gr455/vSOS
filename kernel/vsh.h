@@ -8,6 +8,8 @@
 #include "../drivers/keyboard.h"
 #include "../libc/string.h"
 #include "../drivers/vga.h"
+#include "task/task.h"
+#include "paging/page_controller.h"
 
 
 void shell();

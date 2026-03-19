@@ -111,6 +111,14 @@ void handler(char q[]){
 		printsln(ret_s);
 		return;
 	}
+	else if (strcmp(word, "ps") == 0){
+		task_print_info();
+		return;
+	}
+	else if (strcmp(word, "yield") == 0){
+		task_yield();
+		return;
+	}
 	if(word[0] == '\0') return;
 
 	prints(word);

@@ -16,6 +16,8 @@ cd ../ \
 && i386-elf-gcc -c -ffreestanding -fno-stack-protector -nostdlib ../*.c \
 && cd ../../paging/doto/ \
 && i386-elf-gcc -c -ffreestanding -fno-stack-protector -nostdlib ../*.c \
+&& cd ../../task/doto/ \
+&& i386-elf-gcc -c -ffreestanding -fno-stack-protector -nostdlib ../*.c \
 && cd ../../../drivers/doto/ \
 && i386-elf-gcc -c -ffreestanding -fno-stack-protector -nostdlib ../*.c \
 && cd ../../libc/doto/ \
@@ -24,7 +26,8 @@ cd ../ \
 && nasm ../kernel/kernel_entry.asm -f elf -o ../kernel/doto/entry/kernel_entry.o \
 && nasm ../kernel/intr.asm -f elf -o ../kernel/doto/intr.o \
 && nasm ../kernel/paging/enable.asm -f elf -o ../kernel/paging/doto/enable.o \
-&& i386-elf-ld -o ../kernel/bin/kernel.elf -T ../kernel/vsos.ld ../kernel/doto/entry/kernel_entry.o ../kernel/doto/*.o ../kernel/mmu/doto/*.o ../kernel/paging/doto/*.o ../libc/doto/*.o ../drivers/doto/*.o \
+&& nasm ../kernel/task/context_switch.asm -f elf -o ../kernel/task/doto/context_switch.o \
+&& i386-elf-ld -o ../kernel/bin/kernel.elf -T ../kernel/vsos.ld ../kernel/doto/entry/kernel_entry.o ../kernel/doto/*.o ../kernel/mmu/doto/*.o ../kernel/paging/doto/*.o ../kernel/task/doto/*.o ../libc/doto/*.o ../drivers/doto/*.o \
 && i386-elf-objcopy -O binary ../kernel/bin/kernel.elf ../kernel/bin/kernel.bin \
 && cat ../boot/bin/boot.bin ../kernel/bin/kernel.bin > os-image \
 && echo "done" \
